@@ -46,13 +46,9 @@ export class LinkConsumer {
       osFamily,
     };
 
-    this.logger.log(job.data.detectorResult);
-
     if (!Object.keys(job.data.detectorResult.botResult).length) {
       try {
         const { data } = await axios.get<IpwhoisResponse>(`${url}/${ip}`);
-
-        console.log(data);
 
         if (data.success) {
           const { city, type, country, longitude, latitude } = data;
