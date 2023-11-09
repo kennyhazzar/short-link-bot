@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Redirect, Req } from '@nestjs/common';
+import { Controller, Get, Ip, Param, Redirect, Req } from '@nestjs/common';
 import { LinksService } from './links.service';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
@@ -6,7 +6,6 @@ import { Request } from 'express';
 import { detector } from '../../common/utils';
 import { DetectorResult } from '../../common';
 import { JobHistoryDto } from './dto/link.dto';
-import { RealIP } from 'nestjs-real-ip';
 
 @Controller()
 export class LinksController {
@@ -20,7 +19,7 @@ export class LinksController {
   async redirect(
     @Param('alias') alias: string,
     @Req() request: Request,
-    @RealIP() ip: string,
+    @Ip() ip: string,
   ) {
     const link = await this.linksService.getLinkById(alias);
     const userAgent = request.headers['user-agent'];
@@ -37,7 +36,7 @@ export class LinksController {
 
       this.linkQueue.add({
         detectorResult,
-        ip,
+        ip: ip.replace('::ffff:', ''),
         link,
         userAgent,
       });
