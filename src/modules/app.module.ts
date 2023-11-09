@@ -4,7 +4,6 @@ import { BullConfig, EnvConfig, TypeormConfig } from '../common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { LinksModule } from './links/links.module';
-import { AppController } from './app.controller';
 import { BullModule } from '@nestjs/bull';
 
 @Module({
@@ -15,6 +14,5 @@ import { BullModule } from '@nestjs/bull';
     UsersModule,
     LinksModule,
   ],
-  controllers: [AppController],
 })
 export class AppModule {}

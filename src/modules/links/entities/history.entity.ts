@@ -11,8 +11,8 @@ export class History extends BaseEntity {
     description:
       'Пользовательский агент, устройство, ответственный за переход по ссылке',
   })
-  @Column({ nullable: true })
-  rawUserAgent?: string;
+  @Column({ nullable: true, name: 'rawUserAgent' })
+  userAgent?: string;
 
   @ApiProperty({
     name: 'point',

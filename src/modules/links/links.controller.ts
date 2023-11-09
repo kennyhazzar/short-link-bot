@@ -5,27 +5,25 @@ import { Queue } from 'bull';
 import { Request } from 'express';
 import { detector } from '../../common/utils';
 import { DetectorResult } from '../../common';
+import { JobHistoryDto } from './dto/link.dto';
+import { RealIP } from 'nestjs-real-ip';
 
-@Controller('links')
+@Controller()
 export class LinksController {
   constructor(
     private readonly linksService: LinksService,
-    @InjectQueue('link_queue') private linkQueue: Queue,
+    @InjectQueue('link_queue') private linkQueue: Queue<JobHistoryDto>,
   ) {}
 
   @Get(':alias')
   @Redirect()
-  async redirect(@Param('alias') alias: string, @Req() request: Request) {
+  async redirect(
+    @Param('alias') alias: string,
+    @Req() request: Request,
+    @RealIP() ip: string,
+  ) {
     const link = await this.linksService.getLinkById(alias);
     const userAgent = request.headers['user-agent'];
-
-    const ip = (
-      (request.headers['x-forwarded-for'] ||
-        request.socket.remoteAddress ||
-        '') as any
-    )
-      .split(',')[0]
-      .trim();
 
     if (!link) {
       return {
