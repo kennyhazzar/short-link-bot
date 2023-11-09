@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { History } from './entities/history.entity';
 import { FindOptionsOrderValue, Repository } from 'typeorm';
 import { Link } from './entities/link.entity';
-import { InsertLinkDto } from './dto/link.dto';
+import { InsertLinkDto, UpdateHistoryDto } from './dto/link.dto';
 import { generateId } from '../../common/utils';
 
 @Injectable()
@@ -25,6 +25,10 @@ export class LinksService {
     await this.linkRepository.insert({ ...payload, creator: { id: userId } });
 
     return payload;
+  }
+
+  async incrementRedirectCountById(id: string): Promise<void> {
+    await this.linkRepository.increment({ id }, 'redirectsCount', 1);
   }
 
   async getLinkById(alias: string): Promise<Link> {
@@ -50,6 +54,13 @@ export class LinksService {
 
   async deleteLinkById(id: string): Promise<void> {
     await this.linkRepository.save({ id, isDeleted: true });
+  }
+
+  async updateHistoryByLinkId(
+    id: string,
+    payload: UpdateHistoryDto,
+  ): Promise<void> {
+    await this.historyRepository.insert({ link: { id }, ...payload });
   }
 
   async getHistoryByLinkId(

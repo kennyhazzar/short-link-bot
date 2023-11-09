@@ -4,6 +4,9 @@ import {
   MAXIMUM_LINK_LENGTH,
   MINIMUM_LINK_LENGTH,
 } from '../../../common/constants';
+import { Link } from '../entities/link.entity';
+import { Point } from 'geojson';
+import { DetectorResult } from '../../../common';
 
 export class InsertLinkDto {
   @ApiProperty({
@@ -30,4 +33,24 @@ export class InsertLinkDto {
     example: 3600,
   })
   ttl?: number;
+}
+
+export class JobHistoryDto {
+  userAgent: string;
+  detectorResult: DetectorResult;
+  ip: string;
+  link: Link;
+}
+
+export class UpdateHistoryDto {
+  ip: string;
+  userAgent: string;
+  osName: string;
+  osPlatform: string;
+  osVersion: string;
+  osFamily: string;
+  point?: Point;
+  country?: string;
+  city?: string;
+  type?: string;
 }

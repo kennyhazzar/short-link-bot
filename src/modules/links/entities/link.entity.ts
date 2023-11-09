@@ -45,6 +45,7 @@ export class Link extends BaseEntity {
     nullable: true,
     example: 3600,
   })
+  @Column({ nullable: true })
   ttl?: number;
 
   @ApiProperty({
@@ -54,6 +55,7 @@ export class Link extends BaseEntity {
     default: 0,
     example: 120,
   })
+  @Column({ default: 0 })
   redirectsCount: number;
 
   @ApiProperty({

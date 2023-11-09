@@ -6,10 +6,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../../modules/users/entities/user.entity';
 import { History } from './entities/history.entity';
 import { Link } from './entities/link.entity';
+import { BullModule } from '@nestjs/bull';
+import { LinkConsumer } from './links.processor';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Link, History])],
+  imports: [
+    TypeOrmModule.forFeature([User, Link, History]),
+    BullModule.registerQueueAsync({ name: 'link_queue' }),
+    ConfigModule,
+  ],
   controllers: [LinksController],
-  providers: [LinksService, UsersService],
+  providers: [LinksService, UsersService, LinkConsumer],
 })
 export class LinksModule {}

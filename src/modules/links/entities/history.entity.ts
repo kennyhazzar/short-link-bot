@@ -1,7 +1,8 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../../../common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Link } from './link.entity';
+import { Point } from 'geojson';
 
 @Entity()
 export class History extends BaseEntity {
@@ -11,15 +12,58 @@ export class History extends BaseEntity {
       'Пользовательский агент, устройство, ответственный за переход по ссылке',
   })
   @Column({ nullable: true })
-  userAgent?: string;
+  rawUserAgent?: string;
 
   @ApiProperty({
-    name: 'ipwhoisResponse',
-    description:
-      'Ответ от ipwhois. Хранение в формате JSON. https://ipwhois.io/ru/documentation',
+    name: 'point',
+    nullable: true,
   })
-  @Column({ nullable: true, type: 'json' })
-  ipwhoisResponse?: string;
+  @Index({ spatial: true })
+  @Column({
+    type: 'geography',
+    spatialFeatureType: 'Point',
+    srid: 4326,
+    nullable: true,
+  })
+  point?: Point;
+
+  @ApiProperty({
+    name: 'country',
+    nullable: true,
+  })
+  @Column({ nullable: true })
+  country?: string;
+
+  @ApiProperty({
+    name: 'city',
+    nullable: true,
+  })
+  @Column({ nullable: true })
+  city?: string;
+
+  @ApiProperty({
+    name: 'type',
+    nullable: true,
+  })
+  type?: string;
+
+  @ApiProperty({
+    name: 'ip',
+  })
+  @Column({ nullable: true, type: 'inet' })
+  ip?: string;
+
+  @Column({ nullable: true })
+  osName: string;
+
+  @Column({ nullable: true })
+  osPlatform: string;
+
+  @Column({ nullable: true })
+  osVersion: string;
+
+  @Column({ nullable: true })
+  osFamily: string;
 
   @ApiProperty({
     name: 'link',

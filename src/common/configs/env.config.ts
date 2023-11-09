@@ -14,6 +14,21 @@ const database = registerAs('db', () => ({
   name: process.env.DB_NAME,
 }));
 
+const ipwhois = registerAs('ipwhois', () => ({
+  url: process.env.IPWHOIS_URL,
+}));
+
+/**
+  const telegram = registerAs('tg', () => ({
+  botToken: process.env.BOT_TOKEN,
+  }));
+ */
+
+const redis = registerAs('redis', () => ({
+  host: process.env.REDIS_HOST,
+  port: +process.env.REDIS_PORT,
+}));
+
 export const EnvConfig: ConfigModuleOptions = {
   envFilePath: '.env',
   isGlobal: true,
@@ -25,6 +40,7 @@ export const EnvConfig: ConfigModuleOptions = {
     DB_USERNAME: Joi.string().required(),
     DB_PASSWORD: Joi.string().required(),
     DB_NAME: Joi.string().required(),
+    IPWHOIS_URL: Joi.string().required(),
   }),
-  load: [common, database],
+  load: [common, database, redis, ipwhois],
 };

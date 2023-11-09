@@ -10,3 +10,17 @@ export class DatabaseConfigs {
   password: string;
   name: string;
 }
+
+export class TelegrafConfigs {
+  groupId: number;
+  botToken: string;
+}
+
+export class RedisConfigs {
+  host: string;
+  port: number;
+}
+
+export class IpwhoisConfigs {
+  url: string;
+}
