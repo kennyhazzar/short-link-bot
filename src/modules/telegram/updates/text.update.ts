@@ -25,7 +25,9 @@ export class TextUpdate {
 
       const { appUrl } = this.configService.get<CommonConfigs>('common');
 
-      ctx.reply(`Твоя ссылка ${appUrl}/${alias}`);
+      ctx.reply(`Твоя ссылка ${appUrl}/${alias}`, {
+        disable_web_page_preview: true,
+      });
     } else {
       ctx.reply(
         `Твоя ссылка невалидна. Проверь свою ссылку, и попробуй еще раз`,
