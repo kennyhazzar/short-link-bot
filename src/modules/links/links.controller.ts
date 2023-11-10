@@ -12,8 +12,7 @@ import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { Request } from 'express';
 import { detector } from '../../common/utils';
-import { DetectorResult, TelegrafConfigs } from '../../common';
-import { JobHistoryDto } from './dto/link.dto';
+import { DetectorResult, JobHistory, TelegrafConfigs } from '../../common';
 import { ConfigService } from '@nestjs/config';
 import { ApiExcludeEndpoint } from '@nestjs/swagger';
 
@@ -24,7 +23,7 @@ export class LinksController {
   constructor(
     private readonly linksService: LinksService,
     private readonly configService: ConfigService,
-    @InjectQueue('link_queue') private linkQueue: Queue<JobHistoryDto>,
+    @InjectQueue('link_queue') private linkQueue: Queue<JobHistory>,
   ) {}
 
   @ApiExcludeEndpoint()
@@ -52,7 +51,7 @@ export class LinksController {
         botResult: detector.parseBot(request.headers['user-agent']),
       };
 
-      this.linkQueue.add({
+      this.linkQueue.add('history', {
         detectorResult,
         ip: ip.replace('::ffff:', ''),
         link,

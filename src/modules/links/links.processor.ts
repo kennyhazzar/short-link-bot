@@ -1,22 +1,31 @@
 import { Process, Processor } from '@nestjs/bull';
 import { Logger } from '@nestjs/common';
 import { Job } from 'bull';
-import { JobHistoryDto, UpdateHistoryDto } from './dto/link.dto';
+import { UpdateHistoryDto } from './dto/link.dto';
 import { LinksService } from './links.service';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
-import { IpwhoisConfigs, IpwhoisResponse } from '../../common';
+import {
+  IpwhoisConfigs,
+  IpwhoisResponse,
+  JobHistory,
+  JobQRCode,
+} from '../../common';
+import { generateQR } from '../../common/utils';
+import { InjectBot } from 'nestjs-telegraf';
+import { Context, Telegraf } from 'telegraf';
 
 @Processor('link_queue')
 export class LinkConsumer {
   constructor(
+    @InjectBot() private readonly bot: Telegraf<Context>,
     private readonly linkService: LinksService,
     private configService: ConfigService,
   ) {}
   private readonly logger = new Logger(LinkConsumer.name);
 
-  @Process()
-  async updateHistory(job: Job<JobHistoryDto>) {
+  @Process('history')
+  async updateHistory(job: Job<JobHistory>) {
     const {
       data: {
         detectorResult: {
@@ -68,5 +77,23 @@ export class LinkConsumer {
       this.linkService.updateHistoryByLinkId(link.id, payload),
       this.linkService.incrementRedirectCountByAliasId(job.data.link.alias),
     ]);
+  }
+
+  @Process('qr_generator')
+  async processingQRCode(job: Job<JobQRCode>) {
+    const { telegramId, url } = job.data;
+
+    const source = await generateQR(job.data.url);
+
+    this.bot.telegram.sendPhoto(
+      telegramId,
+      { source },
+      {
+        caption: {
+          text: `\`${url}\``,
+        },
+        parse_mode: 'Markdown',
+      },
+    );
   }
 }
