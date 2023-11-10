@@ -1,10 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { History } from './entities/history.entity';
 import { FindOptionsOrderValue, Repository } from 'typeorm';
 import { Link } from './entities/link.entity';
 import { InsertLinkDto, UpdateHistoryDto } from './dto/link.dto';
 import { generateId } from '../../common/utils';
+import { Cache } from 'cache-manager';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { CACHE_LINK_TTL } from '../../common';
 
 @Injectable()
 export class LinksService {
@@ -12,6 +15,7 @@ export class LinksService {
     @InjectRepository(Link) private readonly linkRepository: Repository<Link>,
     @InjectRepository(History)
     private readonly historyRepository: Repository<History>,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   async createLink(
@@ -21,20 +25,42 @@ export class LinksService {
     if (!payload.alias) {
       payload.alias = generateId();
     }
-
-    await this.linkRepository.insert({ ...payload, creator: { id: userId } });
-
+    const insertedLink = await this.linkRepository.save({
+      ...payload,
+      creator: { id: userId },
+    });
+    this.cacheManager.set(
+      `link_${insertedLink.id}`,
+      insertedLink,
+      CACHE_LINK_TTL,
+    );
     return payload;
   }
 
-  async incrementRedirectCountById(id: string): Promise<void> {
+  async incrementRedirectCountByAliasId(id: string): Promise<void> {
+    const cacheKey = `link_${id}`;
     await this.linkRepository.increment({ id }, 'redirectsCount', 1);
+    const link = await this.cacheManager.get<Link>(cacheKey);
+    if (link) {
+      const redirectsCount = link.redirectsCount + 1;
+      this.cacheManager.set(
+        cacheKey,
+        { ...link, redirectsCount },
+        CACHE_LINK_TTL,
+      );
+    }
   }
 
   async getLinkById(alias: string): Promise<Link> {
-    return await this.linkRepository.findOne({
-      where: { alias, isDeleted: false },
-    });
+    const cacheKey = `link_${alias}`;
+    let link = await this.cacheManager.get<Link>(cacheKey);
+    if (!link) {
+      link = await this.linkRepository.findOne({
+        where: { alias, isDeleted: false },
+      });
+      this.cacheManager.set(cacheKey, link, CACHE_LINK_TTL);
+    }
+    return link;
   }
 
   async getLinksByUserId(
@@ -52,8 +78,9 @@ export class LinksService {
     });
   }
 
-  async deleteLinkById(id: string): Promise<void> {
-    await this.linkRepository.save({ id, isDeleted: true });
+  async deleteLinkByAlias(alias: string): Promise<void> {
+    await this.linkRepository.save({ alias, isDeleted: true });
+    this.cacheManager.del(`link_${alias}`);
   }
 
   async updateHistoryByLinkId(

@@ -21,7 +21,7 @@ export class User extends BaseEntity {
     example: 5327383165,
   })
   @Column({ nullable: true, unique: true })
-  username?: string;
+  username: string;
 
   @ApiProperty({
     name: 'email',
@@ -30,7 +30,7 @@ export class User extends BaseEntity {
     example: 'someemail@email.com',
   })
   @Column({ nullable: true, unique: true })
-  email?: string;
+  email: string;
 
   @ApiProperty({
     name: 'isEmailConfirm',
@@ -67,7 +67,10 @@ export class User extends BaseEntity {
     example: new Date().toISOString(),
   })
   @Column({ nullable: true })
-  unsubscribeAt?: Date;
+  unsubscribeAt: Date;
+
+  @Column({ nullable: true })
+  languageCode: string;
 
   @ApiProperty({
     name: 'link',

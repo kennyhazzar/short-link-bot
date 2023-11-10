@@ -18,11 +18,10 @@ const ipwhois = registerAs('ipwhois', () => ({
   url: process.env.IPWHOIS_URL,
 }));
 
-/**
-  const telegram = registerAs('tg', () => ({
-  botToken: process.env.BOT_TOKEN,
-  }));
- */
+const telegram = registerAs('tg', () => ({
+  token: process.env.BOT_TOKEN,
+  url: process.env.BOT_URL,
+}));
 
 const redis = registerAs('redis', () => ({
   host: process.env.REDIS_HOST,
@@ -41,6 +40,8 @@ export const EnvConfig: ConfigModuleOptions = {
     DB_PASSWORD: Joi.string().required(),
     DB_NAME: Joi.string().required(),
     IPWHOIS_URL: Joi.string().required(),
+    BOT_TOKEN: Joi.string().required(),
+    BOT_URL: Joi.string().required(),
   }),
-  load: [common, database, redis, ipwhois],
+  load: [common, database, redis, ipwhois, telegram],
 };

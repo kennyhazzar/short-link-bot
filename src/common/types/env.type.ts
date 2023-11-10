@@ -12,8 +12,8 @@ export class DatabaseConfigs {
 }
 
 export class TelegrafConfigs {
-  groupId: number;
-  botToken: string;
+  token: string;
+  url: string;
 }
 
 export class RedisConfigs {

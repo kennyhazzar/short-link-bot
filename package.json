@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "@nestjs/bull": "^10.0.1",
+        "@nestjs/cache-manager": "^2.1.1",
         "@nestjs/common": "^9.0.0",
         "@nestjs/config": "^3.1.1",
         "@nestjs/core": "^9.0.0",
@@ -31,13 +32,18 @@
         "@types/geojson": "^7946.0.13",
         "axios": "^1.6.1",
         "bull": "^4.11.4",
+        "cache-manager": "^5.2.4",
+        "cache-manager-redis-store": "^3.0.1",
         "geojson": "^0.5.0",
         "joi": "^17.11.0",
         "mysql2": "^3.6.3",
+        "nestjs-telegraf": "^2.7.0",
         "node-device-detector": "^2.0.17",
         "pg": "^8.11.3",
+        "redis": "^4.6.10",
         "reflect-metadata": "^0.1.13",
         "rxjs": "^7.2.0",
+        "telegraf": "^4.15.0",
         "typeorm": "^0.3.17"
     },
     "devDependencies": {
