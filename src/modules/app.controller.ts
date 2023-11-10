@@ -1,7 +1,9 @@
 import { Controller, Get, Param, Redirect } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TelegrafConfigs } from '../common';
+import { ApiExcludeController } from '@nestjs/swagger';
 
+@ApiExcludeController()
 @Controller()
 export class AppController {
   constructor(private readonly configService: ConfigService) {}

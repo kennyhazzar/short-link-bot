@@ -15,6 +15,7 @@ import { detector } from '../../common/utils';
 import { DetectorResult, TelegrafConfigs } from '../../common';
 import { JobHistoryDto } from './dto/link.dto';
 import { ConfigService } from '@nestjs/config';
+import { ApiExcludeEndpoint } from '@nestjs/swagger';
 
 @Controller('links')
 export class LinksController {
@@ -26,6 +27,7 @@ export class LinksController {
     @InjectQueue('link_queue') private linkQueue: Queue<JobHistoryDto>,
   ) {}
 
+  @ApiExcludeEndpoint()
   @Get(':alias')
   @Redirect()
   async redirect(
