@@ -12,8 +12,9 @@ import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { Request } from 'express';
 import { detector } from '../../common/utils';
-import { DetectorResult } from '../../common';
+import { DetectorResult, TelegrafConfigs } from '../../common';
 import { JobHistoryDto } from './dto/link.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('links')
 export class LinksController {
@@ -21,6 +22,7 @@ export class LinksController {
 
   constructor(
     private readonly linksService: LinksService,
+    private readonly configService: ConfigService,
     @InjectQueue('link_queue') private linkQueue: Queue<JobHistoryDto>,
   ) {}
 
@@ -37,8 +39,10 @@ export class LinksController {
     const userAgent = request.headers['user-agent'];
 
     if (!link) {
+      const { url } = this.configService.get<TelegrafConfigs>('tg');
+
       return {
-        url: '/',
+        url,
       };
     } else {
       const detectorResult: DetectorResult = {
