@@ -37,9 +37,9 @@ export class LinksService {
     return payload;
   }
 
-  async incrementRedirectCountByAliasId(id: string): Promise<void> {
-    const cacheKey = `link_${id}`;
-    await this.linkRepository.increment({ id }, 'redirectsCount', 1);
+  async incrementRedirectCountByAliasId(alias: string): Promise<void> {
+    const cacheKey = `link_${alias}`;
+    await this.linkRepository.increment({ alias }, 'redirectsCount', 1);
     const link = await this.cacheManager.get<Link>(cacheKey);
     if (link) {
       const redirectsCount = link.redirectsCount + 1;

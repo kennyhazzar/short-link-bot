@@ -64,7 +64,6 @@ export class LinkConsumer {
         console.log(error);
       }
     }
-
     await Promise.allSettled([
       this.linkService.updateHistoryByLinkId(link.id, payload),
       this.linkService.incrementRedirectCountByAliasId(job.data.link.alias),
