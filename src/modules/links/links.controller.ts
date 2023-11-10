@@ -33,7 +33,7 @@ export class LinksController {
   ) {
     this.logger.log(`redirecting: ${alias}`);
 
-    const link = await this.linksService.getLinkById(alias);
+    const link = await this.linksService.getById(alias);
     const userAgent = request.headers['user-agent'];
 
     if (!link) {

@@ -8,7 +8,6 @@ import { RedisClientOptions } from 'redis';
 import { redisStore } from 'cache-manager-redis-store';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CACHE_USER_TTL, RedisConfigs } from '../../common';
-import { UsersController } from './users.controller';
 
 @Module({
   imports: [
@@ -30,6 +29,5 @@ import { UsersController } from './users.controller';
   ],
   providers: [UsersService],
   exports: [UsersService],
-  controllers: [UsersController],
 })
 export class UsersModule {}

@@ -11,7 +11,7 @@ export class User extends BaseEntity {
     example: 5327383165,
   })
   @Index()
-  @Column({ unique: true })
+  @Column({ unique: true, type: 'bigint' })
   telegramId: number;
 
   @ApiProperty({

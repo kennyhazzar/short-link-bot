@@ -1,5 +1,6 @@
 export class CommonConfigs {
   port: number;
+  appUrl: string;
 }
 
 export class DatabaseConfigs {

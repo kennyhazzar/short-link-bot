@@ -14,30 +14,35 @@ export class UsersService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
-  public async insertUser(user: InsertUserDto): Promise<void> {
+  public async insert(user: InsertUserDto): Promise<User> {
     const insertedUser = await this.userRepository.save(user);
     this.cacheManager.set(
-      `user_${insertedUser.id}`,
+      `user_${insertedUser.telegramId}`,
       insertedUser,
       CACHE_USER_TTL,
     );
+    return insertedUser;
   }
 
-  public async getUserById(id: string): Promise<User> {
-    const cacheKey = `user_${id}`;
+  public async getByTelegramId(telegramId: number): Promise<User> {
+    const cacheKey = `user_${telegramId}`;
 
-    let cacheUser = await this.cacheManager.get<User>(cacheKey);
-    if (!cacheUser) {
-      cacheUser = await this.userRepository.findOne({ where: { id } });
-      this.cacheManager.set(cacheKey, cacheUser, CACHE_USER_TTL);
+    let user = await this.cacheManager.get<User>(cacheKey);
+    if (!user) {
+      user = await this.userRepository.findOne({
+        where: { telegramId },
+      });
+      if (user) {
+        this.cacheManager.set(cacheKey, user, CACHE_USER_TTL);
+      }
     }
-    return cacheUser;
+    return user;
   }
 
-  public async updateUserById(id: string, payload: User): Promise<void> {
+  public async updateById(id: string, payload: User): Promise<void> {
     const updatedUser = await this.userRepository.save({ id, ...payload });
     this.cacheManager.set(
-      `user_${updatedUser.id}`,
+      `user_${updatedUser.telegramId}`,
       updatedUser,
       CACHE_USER_TTL,
     );

@@ -10,10 +10,30 @@ export class MainUpdate {
   async checkUser(ctx: Context, next: () => Promise<void>) {
     const {
       message: {
-        from: { id, username, language_code: languageCode },
+        from: { id: telegramId, username, language_code: languageCode },
       },
     } = ctx;
 
-    
+    const user = await this.usersService.getByTelegramId(telegramId);
+
+    if (!user) {
+      await this.usersService.insert({
+        telegramId,
+        username,
+        languageCode,
+      });
+
+      ctx.reply(
+        'Добро пожаловать! Мы работаем в тестовом режиме. Отправь мне ссылку, которую нужно сократить',
+      );
+
+      return;
+    }
+
+    if (user.isBlocked) {
+      return;
+    }
+
+    await next();
   }
 }

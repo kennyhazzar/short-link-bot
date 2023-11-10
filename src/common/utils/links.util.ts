@@ -12,3 +12,12 @@ export const generateId = (
   }
   return token.join('');
 };
+
+export const isUrlValid = (text: string): boolean => {
+  try {
+    new URL(text);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};

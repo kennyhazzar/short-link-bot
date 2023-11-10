@@ -3,6 +3,7 @@ import * as Joi from 'joi';
 
 const common = registerAs('common', () => ({
   port: +process.env.PORT,
+  appUrl: process.env.APP_URL,
 }));
 
 const database = registerAs('db', () => ({
@@ -42,6 +43,7 @@ export const EnvConfig: ConfigModuleOptions = {
     IPWHOIS_URL: Joi.string().required(),
     BOT_TOKEN: Joi.string().required(),
     BOT_URL: Joi.string().required(),
+    APP_URL: Joi.string().required(),
   }),
   load: [common, database, redis, ipwhois, telegram],
 };

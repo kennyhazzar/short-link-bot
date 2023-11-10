@@ -37,5 +37,6 @@ import { CacheModule } from '@nestjs/cache-manager';
   ],
   controllers: [LinksController],
   providers: [LinksService, LinkConsumer],
+  exports: [LinksService],
 })
 export class LinksModule {}

@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TelegramService } from './telegram.service';
-import { MainUpdate } from './updates/main.update';
+import { MainUpdate, TextUpdate } from './updates';
 import { UsersModule } from '../users/users.module';
+import { LinksModule } from '../links/links.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [UsersModule],
-  providers: [TelegramService, MainUpdate],
+  imports: [UsersModule, LinksModule, ConfigModule],
+  providers: [TelegramService, MainUpdate, TextUpdate],
 })
 export class TelegramModule {}

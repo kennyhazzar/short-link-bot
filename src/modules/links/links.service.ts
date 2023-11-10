@@ -51,14 +51,16 @@ export class LinksService {
     }
   }
 
-  async getLinkById(alias: string): Promise<Link> {
+  async getById(alias: string): Promise<Link> {
     const cacheKey = `link_${alias}`;
     let link = await this.cacheManager.get<Link>(cacheKey);
     if (!link) {
       link = await this.linkRepository.findOne({
         where: { alias, isDeleted: false },
       });
-      this.cacheManager.set(cacheKey, link, CACHE_LINK_TTL);
+      if (link) {
+        this.cacheManager.set(cacheKey, link, CACHE_LINK_TTL);
+      }
     }
     return link;
   }
