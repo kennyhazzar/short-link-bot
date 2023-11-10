@@ -1,6 +1,6 @@
 import { On, Update } from 'nestjs-telegraf';
 import { Context } from 'telegraf';
-import { generateId, isUrlValid } from '../../../common/utils';
+import { generateId, generateQR, isUrlValid } from '../../../common/utils';
 import { LinksService } from '../../links/links.service';
 import { ConfigService } from '@nestjs/config';
 import { CommonConfigs } from '../../../common';
@@ -25,9 +25,19 @@ export class TextUpdate {
 
       const { appUrl } = this.configService.get<CommonConfigs>('common');
 
-      ctx.reply(`Твоя ссылка ${appUrl}/${alias}`, {
-        disable_web_page_preview: true,
-      });
+      const shortLink = `${appUrl}/${alias}`;
+
+      const qrCode = await generateQR(shortLink);
+
+      ctx.replyWithPhoto(
+        { source: qrCode },
+        {
+          caption: {
+            text: `\`${shortLink}\``,
+          },
+          parse_mode: 'Markdown',
+        },
+      );
     } else {
       ctx.reply(
         `Твоя ссылка невалидна. Проверь свою ссылку, и попробуй еще раз`,

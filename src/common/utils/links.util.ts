@@ -1,3 +1,4 @@
+import QRCode from 'qrcode';
 import { LINK_DICTIONARY, MINIMUM_LINK_LENGTH } from '../constants';
 
 export const generateId = (
@@ -21,3 +22,6 @@ export const isUrlValid = (text: string): boolean => {
     return false;
   }
 };
+
+export const generateQR = async (text: string): Promise<Buffer> =>
+  QRCode.toBuffer(text);
