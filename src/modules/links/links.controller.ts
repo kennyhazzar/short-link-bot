@@ -1,4 +1,12 @@
-import { Controller, Get, Ip, Param, Redirect, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Ip,
+  Logger,
+  Param,
+  Redirect,
+  Req,
+} from '@nestjs/common';
 import { LinksService } from './links.service';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
@@ -7,8 +15,10 @@ import { detector } from '../../common/utils';
 import { DetectorResult } from '../../common';
 import { JobHistoryDto } from './dto/link.dto';
 
-@Controller()
+@Controller('links')
 export class LinksController {
+  private readonly logger = new Logger(LinksController.name);
+
   constructor(
     private readonly linksService: LinksService,
     @InjectQueue('link_queue') private linkQueue: Queue<JobHistoryDto>,
@@ -21,6 +31,8 @@ export class LinksController {
     @Req() request: Request,
     @Ip() ip: string,
   ) {
+    this.logger.log(`redirecting: ${alias}`);
+
     const link = await this.linksService.getLinkById(alias);
     const userAgent = request.headers['user-agent'];
 

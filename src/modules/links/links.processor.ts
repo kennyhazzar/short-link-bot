@@ -60,14 +60,14 @@ export class LinkConsumer {
             coordinates: [latitude, longitude],
           };
         }
-
-        await Promise.allSettled([
-          this.linkService.updateHistoryByLinkId(link.id, payload),
-          this.linkService.incrementRedirectCountById(job.data.link.id),
-        ]);
       } catch (error: any) {
         console.log(error);
       }
     }
+
+    await Promise.allSettled([
+      this.linkService.updateHistoryByLinkId(link.id, payload),
+      this.linkService.incrementRedirectCountById(job.data.link.id),
+    ]);
   }
 }
