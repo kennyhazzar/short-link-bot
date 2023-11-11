@@ -20,14 +20,14 @@ export class LinksService {
 
   async createLink(
     payload: InsertLinkDto,
-    userId?: string,
+    telegramId?: number,
   ): Promise<InsertLinkDto> {
     if (!payload.alias) {
       payload.alias = generateId();
     }
     const insertedLink = await this.linkRepository.save({
       ...payload,
-      creator: { id: userId },
+      creator: { telegramId },
     });
     this.cacheManager.set(
       `link_${insertedLink.id}`,

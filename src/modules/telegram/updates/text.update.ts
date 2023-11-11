@@ -20,10 +20,13 @@ export class TextUpdate {
     const url = (ctx as any).message.text as string;
     if (isUrlValid(url)) {
       const alias = generateId();
-      this.linksService.createLink({
-        url,
-        alias,
-      });
+      this.linksService.createLink(
+        {
+          url,
+          alias,
+        },
+        ctx.chat.id,
+      );
       const { appUrl } = this.configService.get<CommonConfigs>('common');
       const shortLink = `${appUrl}/${alias}`;
 
