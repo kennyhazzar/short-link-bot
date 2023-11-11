@@ -1,6 +1,7 @@
 import { Update, Use } from 'nestjs-telegraf';
 import { Context } from 'telegraf';
 import { UsersService } from '../../users/users.service';
+import { getTextByLanguageCode } from '../../../common/utils';
 
 @Update()
 export class MainUpdate {
@@ -17,9 +18,7 @@ export class MainUpdate {
         languageCode: ctx.from.language_code,
       });
 
-      ctx.reply(
-        'Добро пожаловать! Мы работаем в тестовом режиме. Отправь мне ссылку, которую нужно сократить',
-      );
+      ctx.reply(getTextByLanguageCode(ctx.from.language_code, 'start'));
 
       return;
     }
