@@ -35,9 +35,36 @@ export class TextUpdate {
     const url = getValidUrlByTelegramUserMessage(message);
 
     if (url) {
+      const { appUrl } = this.configService.get<CommonConfigs>('common');
+
+      if (url.includes(appUrl)) {
+        const [_, alias] = url.replace(/\s/g, '').split(`${appUrl}/`);
+
+        if (alias) {
+          try {
+            const link = await this.linksService.getById(alias, ctx.chat.id);
+
+            if (link) {
+              const text = getTextByLanguageCode(languageCode, 'stats');
+
+              ctx.reply(text + link.redirectsCount, {
+                parse_mode: 'Markdown',
+              });
+            } else {
+              ctx.reply(
+                getTextByLanguageCode(
+                  languageCode,
+                  'stats_error_link_does_not_found',
+                ),
+              );
+            }
+          } catch (error) {}
+        }
+        return;
+      }
+
       const alias = generateId();
       this.linksService.createLink({ url, alias }, ctx.chat.id);
-      const { appUrl } = this.configService.get<CommonConfigs>('common');
       const shortLink = `${appUrl}/${alias}`;
 
       this.linkQueue.add('send_alias_link', {

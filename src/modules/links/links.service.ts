@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { History } from './entities/history.entity';
-import { FindOptionsOrderValue, Repository } from 'typeorm';
+import { FindOptionsOrderValue, FindOptionsWhere, Repository } from 'typeorm';
 import { Link } from './entities/link.entity';
 import { InsertLinkDto, UpdateHistoryDto } from './dto/link.dto';
 import { Cache } from 'cache-manager';
@@ -35,10 +35,7 @@ export class LinksService {
       }
     }
 
-    const insertedLink = await this.linkRepository.save({
-      ...payload,
-      creator: { telegramId },
-    });
+    const insertedLink = await this.linkRepository.save(options);
     this.cacheManager.set(
       `link_${insertedLink.alias}`,
       insertedLink,
@@ -61,12 +58,16 @@ export class LinksService {
     }
   }
 
-  async getById(alias: string): Promise<Link> {
+  async getById(alias: string, telegramId?: number): Promise<Link> {
+    const where: FindOptionsWhere<Link> = { alias, isDeleted: false };
+    if (telegramId) {
+      where.creator = { telegramId };
+    }
     const cacheKey = `link_${alias}`;
     let link = await this.cacheManager.get<Link>(cacheKey);
     if (!link) {
       link = await this.linkRepository.findOne({
-        where: { alias, isDeleted: false },
+        where,
       });
       if (link) {
         this.cacheManager.set(cacheKey, link, CACHE_LINK_TTL);

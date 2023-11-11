@@ -16,4 +16,14 @@ export const texts: Localization[] = [
     ru: 'Твоя ссылка невалидна. Проверь свою ссылку, и попробуй еще раз',
     en: 'Your link is invalid. Check your link and try again',
   },
+  {
+    target: 'stats',
+    ru: 'Количество переходов по ссылке: ',
+    en: 'Redirect count on the link: ',
+  },
+  {
+    target: 'stats_error_link_does_not_found',
+    ru: 'Ссылка не найдена',
+    en: 'Link not found',
+  },
 ];
