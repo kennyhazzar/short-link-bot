@@ -9,7 +9,7 @@ import {
   IpwhoisConfigs,
   IpwhoisResponse,
   JobHistory,
-  JobQRCode,
+  JobSendAliasLink,
 } from '../../common';
 import { generateQR } from '../../common/utils';
 import { InjectBot } from 'nestjs-telegraf';
@@ -79,21 +79,23 @@ export class LinkConsumer {
     ]);
   }
 
-  @Process('qr_generator')
-  async processingQRCode(job: Job<JobQRCode>) {
-    const { telegramId, url } = job.data;
+  @Process('send_alias_link')
+  async processingQRCode(job: Job<JobSendAliasLink>) {
+    const { telegramId, shortLink: url, originalLink } = job.data;
+    const text = `Оригинальная ссылка: \`${originalLink}\`\nКороткая ссылка: \`${url}\``;
 
-    const source = await generateQR(job.data.url);
-
-    this.bot.telegram.sendPhoto(
-      telegramId,
-      { source },
-      {
-        caption: {
-          text: `\`${url}\``,
+    try {
+      const source = await generateQR(job.data.shortLink);
+      this.bot.telegram.sendPhoto(
+        telegramId,
+        { source },
+        {
+          caption: {
+            text,
+          },
+          parse_mode: 'Markdown',
         },
-        parse_mode: 'Markdown',
-      },
-    );
+      );
+    } catch (error) {}
   }
 }

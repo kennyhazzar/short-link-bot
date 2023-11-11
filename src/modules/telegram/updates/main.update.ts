@@ -8,19 +8,13 @@ export class MainUpdate {
 
   @Use()
   async checkUser(ctx: Context, next: () => Promise<void>) {
-    const {
-      message: {
-        from: { id: telegramId, username, language_code: languageCode },
-      },
-    } = ctx;
-
-    const user = await this.usersService.getByTelegramId(telegramId);
+    const user = await this.usersService.getByTelegramId(ctx.chat.id);
 
     if (!user) {
       await this.usersService.insert({
-        telegramId,
-        username,
-        languageCode,
+        telegramId: ctx.chat.id,
+        username: ctx.from.username,
+        languageCode: ctx.from.language_code,
       });
 
       ctx.reply(
@@ -34,6 +28,6 @@ export class MainUpdate {
       return;
     }
 
-    await next();
+    next();
   }
 }

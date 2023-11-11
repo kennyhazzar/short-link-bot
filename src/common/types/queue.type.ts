@@ -8,7 +8,8 @@ export class JobHistory {
   link: Link;
 }
 
-export class JobQRCode {
-  url: string;
+export class JobSendAliasLink {
+  shortLink: string;
+  originalLink: string;
   telegramId: number;
 }

@@ -1,5 +1,6 @@
 import QRCode from 'qrcode';
 import { LINK_DICTIONARY, MINIMUM_LINK_LENGTH } from '../constants';
+import { Message } from 'telegraf/typings/core/types/typegram';
 
 export const generateId = (
   length = MINIMUM_LINK_LENGTH,
@@ -14,14 +15,23 @@ export const generateId = (
   return token.join('');
 };
 
-export const isUrlValid = (text: string): boolean => {
-  try {
-    new URL(text);
-    return true;
-  } catch (err) {
-    return false;
+export const getValidUrlByTelegramUserMessage = (
+  message: Message.TextMessage,
+): string | undefined => {
+  if (message.entities && message.entities.length === 1) {
+    const entity = message.entities[0];
+    if (entity.type === 'url') {
+      const url = message.text.slice(entity.offset);
+      if (url.startsWith('http')) {
+        return url;
+      } else {
+        return 'https://' + url;
+      }
+    }
   }
 };
 
 export const generateQR = async (text: string): Promise<Buffer> =>
-  QRCode.toBuffer(text);
+  QRCode.toBuffer(text, {
+    scale: 10,
+  });

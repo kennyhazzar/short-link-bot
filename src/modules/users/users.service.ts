@@ -39,8 +39,11 @@ export class UsersService {
     return user;
   }
 
-  public async updateById(id: string, payload: User): Promise<void> {
-    const updatedUser = await this.userRepository.save({ id, ...payload });
+  public async updateById(telegramId: number, payload: User): Promise<void> {
+    const updatedUser = await this.userRepository.save({
+      telegramId,
+      ...payload,
+    });
     this.cacheManager.set(
       `user_${updatedUser.telegramId}`,
       updatedUser,

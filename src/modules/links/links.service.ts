@@ -4,10 +4,10 @@ import { History } from './entities/history.entity';
 import { FindOptionsOrderValue, Repository } from 'typeorm';
 import { Link } from './entities/link.entity';
 import { InsertLinkDto, UpdateHistoryDto } from './dto/link.dto';
-import { generateId } from '../../common/utils';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { CACHE_LINK_TTL } from '../../common';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class LinksService {
@@ -15,6 +15,7 @@ export class LinksService {
     @InjectRepository(Link) private readonly linkRepository: Repository<Link>,
     @InjectRepository(History)
     private readonly historyRepository: Repository<History>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
@@ -22,15 +23,24 @@ export class LinksService {
     payload: InsertLinkDto,
     telegramId?: number,
   ): Promise<InsertLinkDto> {
-    if (!payload.alias) {
-      payload.alias = generateId();
+    const options: InsertLinkDto & Pick<Link, 'creator'> = {
+      ...payload,
+    };
+
+    if (telegramId) {
+      const user = await this.userRepository.findOne({ where: { telegramId } });
+
+      if (user) {
+        options.creator = user;
+      }
     }
+
     const insertedLink = await this.linkRepository.save({
       ...payload,
       creator: { telegramId },
     });
     this.cacheManager.set(
-      `link_${insertedLink.id}`,
+      `link_${insertedLink.alias}`,
       insertedLink,
       CACHE_LINK_TTL,
     );
