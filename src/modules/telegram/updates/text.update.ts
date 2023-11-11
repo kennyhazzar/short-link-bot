@@ -2,6 +2,7 @@ import { On, Update } from 'nestjs-telegraf';
 import { Context } from 'telegraf';
 import {
   generateId,
+  getTextByLanguageCode,
   getValidUrlByTelegramUserMessage,
 } from '../../../common/utils';
 import { LinksService } from '../../links/links.service';
@@ -21,9 +22,17 @@ export class TextUpdate {
 
   @On('text')
   async validateUrl(ctx: Context) {
-    const url = getValidUrlByTelegramUserMessage(
-      ctx.message as Message.TextMessage,
-    );
+    const message = ctx.message as Message.TextMessage;
+    const languageCode = ctx.from.language_code;
+
+    if (
+      message.text.includes('/start') &&
+      message.entities.some(({ type }) => type === 'bot_command')
+    ) {
+      await this.startCommand(ctx);
+      return;
+    }
+    const url = getValidUrlByTelegramUserMessage(message);
 
     if (url) {
       const alias = generateId();
@@ -35,11 +44,14 @@ export class TextUpdate {
         shortLink,
         originalLink: url,
         telegramId: ctx.chat.id,
+        languageCode,
       });
     } else {
-      ctx.reply(
-        `Твоя ссылка невалидна. Проверь свою ссылку, и попробуй еще раз`,
-      );
+      ctx.reply(getTextByLanguageCode(languageCode, 'validation_error'));
     }
+  }
+
+  private async startCommand(ctx: Context) {
+    ctx.reply(getTextByLanguageCode(ctx.from.language_code, 'start'));
   }
 }

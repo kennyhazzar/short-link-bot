@@ -12,4 +12,5 @@ export class JobSendAliasLink {
   shortLink: string;
   originalLink: string;
   telegramId: number;
+  languageCode: string;
 }

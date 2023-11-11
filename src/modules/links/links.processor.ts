@@ -11,7 +11,7 @@ import {
   JobHistory,
   JobSendAliasLink,
 } from '../../common';
-import { generateQR } from '../../common/utils';
+import { generateQR, getTextByLanguageCode } from '../../common/utils';
 import { InjectBot } from 'nestjs-telegraf';
 import { Context, Telegraf } from 'telegraf';
 
@@ -81,8 +81,10 @@ export class LinkConsumer {
 
   @Process('send_alias_link')
   async processingQRCode(job: Job<JobSendAliasLink>) {
-    const { telegramId, shortLink: url, originalLink } = job.data;
-    const text = `Оригинальная ссылка: \`${originalLink}\`\nКороткая ссылка: \`${url}\``;
+    const { telegramId, shortLink: url, originalLink, languageCode } = job.data;
+    const text = getTextByLanguageCode(languageCode, 'short_link_result')
+      .replace('%original%', originalLink)
+      .replace('%short%', url);
 
     try {
       const source = await generateQR(job.data.shortLink);
