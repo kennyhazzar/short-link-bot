@@ -42,7 +42,10 @@ export class TextUpdate {
 
         if (alias) {
           try {
-            const link = await this.linksService.getById(alias, ctx.chat.id);
+            const link = await this.linksService.getByAliasAndTelegramId(
+              alias,
+              ctx.chat.id,
+            );
 
             if (link) {
               const text = getTextByLanguageCode(languageCode, 'stats');

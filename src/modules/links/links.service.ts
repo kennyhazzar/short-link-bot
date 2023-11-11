@@ -58,11 +58,8 @@ export class LinksService {
     }
   }
 
-  async getById(alias: string, telegramId?: number): Promise<Link> {
+  async getById(alias: string): Promise<Link> {
     const where: FindOptionsWhere<Link> = { alias, isDeleted: false };
-    if (telegramId) {
-      where.creator = { telegramId };
-    }
     const cacheKey = `link_${alias}`;
     let link = await this.cacheManager.get<Link>(cacheKey);
     if (!link) {
@@ -74,6 +71,17 @@ export class LinksService {
       }
     }
     return link;
+  }
+
+  async getByAliasAndTelegramId(alias: string, telegramId: number) {
+    return await this.linkRepository.findOne({
+      where: {
+        alias,
+        creator: {
+          telegramId,
+        },
+      },
+    });
   }
 
   async getLinksByUserId(
