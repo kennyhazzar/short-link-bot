@@ -32,7 +32,7 @@ export class LinksController {
       const { url } = this.configService.get<TelegrafConfigs>('tg');
 
       return {
-        url,
+        url: `${url}?start=not_found_${alias}`,
       };
     } else {
       this.logger.log(

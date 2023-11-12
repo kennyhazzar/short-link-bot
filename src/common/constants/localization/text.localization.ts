@@ -26,4 +26,9 @@ export const texts: Localization[] = [
     ru: 'Ссылка не найдена',
     en: 'Link not found',
   },
+  {
+    target: 'link_not_found',
+    ru: 'Ссылка `%link%` не найдена',
+    en: 'Link `%link%` not found',
+  },
 ];

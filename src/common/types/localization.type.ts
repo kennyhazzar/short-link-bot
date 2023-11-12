@@ -3,7 +3,8 @@ export type Target =
   | 'short_link_result'
   | 'validation_error'
   | 'stats'
-  | 'stats_error_link_does_not_found';
+  | 'stats_error_link_does_not_found'
+  | 'link_not_found';
 
 export class Localization {
   target: Target;
