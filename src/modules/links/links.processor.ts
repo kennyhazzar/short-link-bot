@@ -53,11 +53,6 @@ export class LinkConsumer {
       isBot: isbot(userAgent),
     };
 
-    this.logger.log({
-      ip,
-      isBot,
-    });
-
     const payload: UpdateHistoryDto = {
       ip,
       userAgent,
@@ -78,7 +73,7 @@ export class LinkConsumer {
           payload.country = country;
           payload.point = {
             type: 'Point',
-            coordinates: [latitude, longitude],
+            coordinates: [longitude, latitude],
           };
         }
       } catch (error: any) {
