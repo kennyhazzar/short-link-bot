@@ -42,8 +42,6 @@ export class LinksController {
         isBot: isBot(userAgent),
       };
 
-      this.logger.log(JSON.stringify(request.headers));
-
       this.logger.log(
         `
         redirecting: ${alias}
