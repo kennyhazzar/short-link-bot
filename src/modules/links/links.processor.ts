@@ -53,6 +53,11 @@ export class LinkConsumer {
       isBot: isbot(userAgent),
     };
 
+    this.logger.log({
+      ip,
+      isBot,
+    });
+
     const payload: UpdateHistoryDto = {
       ip,
       userAgent,
