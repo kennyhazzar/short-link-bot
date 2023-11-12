@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Ip,
-  Logger,
-  Param,
-  Redirect,
-  Req,
-} from '@nestjs/common';
+import { Controller, Get, Logger, Param, Redirect, Req } from '@nestjs/common';
 import { LinksService } from './links.service';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
@@ -30,13 +22,13 @@ export class LinksController {
   @ApiExcludeEndpoint()
   @Get(':alias')
   @Redirect()
-  async redirect(
-    @Param('alias') alias: string,
-    @Req() request: Request,
-    @Ip() ip: string,
-  ) {
+  async redirect(@Param('alias') alias: string, @Req() request: Request) {
     const link = await this.linksService.getById(alias);
     const userAgent = request.headers['user-agent'];
+    const ip =
+      (request.headers['x-real-ip'] as string) ||
+      (request.headers['x-forwarded-for'] as string) ||
+      '';
 
     if (!link) {
       const { url } = this.configService.get<TelegrafConfigs>('tg');
