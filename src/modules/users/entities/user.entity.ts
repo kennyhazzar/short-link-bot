@@ -1,7 +1,15 @@
-import { Column, Entity, Index, JoinColumn, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 import { BaseEntity } from '../../../common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Link } from '../../links/entities/link.entity';
+import { Auth } from '../../auth/entities';
 
 @Entity()
 export class User extends BaseEntity {
@@ -81,4 +89,8 @@ export class User extends BaseEntity {
   @JoinColumn()
   @OneToMany(() => Link, (link) => link.id)
   link: Link;
+
+  @JoinColumn()
+  @OneToOne(() => Auth, (auth) => auth.id)
+  apiAuth: Auth;
 }

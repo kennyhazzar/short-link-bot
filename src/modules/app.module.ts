@@ -13,6 +13,7 @@ import { BullModule } from '@nestjs/bull';
 import { AppController } from './app.controller';
 import { TelegrafModule } from 'nestjs-telegraf';
 import { TelegramModule } from './telegram/telegram.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { TelegramModule } from './telegram/telegram.module';
     UsersModule,
     LinksModule,
     TelegramModule,
+    AuthModule,
   ],
   controllers: [AppController],
 })
