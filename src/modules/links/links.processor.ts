@@ -6,14 +6,20 @@ import { LinksService } from './links.service';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import {
+  DetectorResult,
   IpwhoisConfigs,
   IpwhoisResponse,
   JobHistory,
   JobSendAliasLink,
 } from '../../common';
-import { generateQR, getTextByLanguageCode } from '../../common/utils';
+import {
+  detector,
+  generateQR,
+  getTextByLanguageCode,
+} from '../../common/utils';
 import { InjectBot } from 'nestjs-telegraf';
 import { Context, Telegraf } from 'telegraf';
+import isbot from 'isbot';
 
 @Processor('link_queue')
 export class LinkConsumer {
@@ -27,25 +33,25 @@ export class LinkConsumer {
   @Process('history')
   async updateHistory(job: Job<JobHistory>) {
     const {
-      data: {
-        detectorResult: {
-          result: {
-            os: {
-              family: osFamily,
-              name: osName,
-              platform: osPlatform,
-              version: osVersion,
-            },
-          },
-          isBot,
-        },
-        ip,
-        link,
-        userAgent,
-      },
+      data: { ip, link, userAgent },
     } = job;
 
     const { url } = this.configService.get<IpwhoisConfigs>('ipwhois');
+
+    const {
+      result: {
+        os: {
+          family: osFamily,
+          name: osName,
+          platform: osPlatform,
+          version: osVersion,
+        },
+      },
+      isBot,
+    }: DetectorResult = {
+      result: detector.detect(userAgent),
+      isBot: isbot(userAgent),
+    };
 
     const payload: UpdateHistoryDto = {
       ip,

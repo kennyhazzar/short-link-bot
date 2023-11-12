@@ -3,11 +3,9 @@ import { LinksService } from './links.service';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { Request } from 'express';
-import { detector } from '../../common/utils';
-import { DetectorResult, JobHistory, TelegrafConfigs } from '../../common';
+import { JobHistory, TelegrafConfigs } from '../../common';
 import { ConfigService } from '@nestjs/config';
 import { ApiExcludeEndpoint } from '@nestjs/swagger';
-import isBot from 'isbot';
 
 @Controller('links')
 export class LinksController {
@@ -37,22 +35,15 @@ export class LinksController {
         url,
       };
     } else {
-      const detectorResult: DetectorResult = {
-        result: detector.detect(request.headers['user-agent']),
-        isBot: isBot(userAgent),
-      };
-
       this.logger.log(
         `
         redirecting: ${alias}
-        isBot: ${detectorResult.isBot}
         userAgent: ${userAgent}
         `,
       );
 
       this.linkQueue.add('history', {
-        detectorResult,
-        ip: ip.replace('::ffff:', ''),
+        ip,
         link,
         userAgent,
       });
