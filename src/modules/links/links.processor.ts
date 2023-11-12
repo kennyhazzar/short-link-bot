@@ -73,11 +73,11 @@ export class LinkConsumer {
       } catch (error: any) {
         console.log(error);
       }
+      await Promise.allSettled([
+        this.linkService.updateHistoryByLinkId(link.id, payload),
+        this.linkService.incrementRedirectCountByAliasId(job.data.link.alias),
+      ]);
     }
-    await Promise.allSettled([
-      this.linkService.updateHistoryByLinkId(link.id, payload),
-      this.linkService.incrementRedirectCountByAliasId(job.data.link.alias),
-    ]);
   }
 
   @Process('send_alias_link')
