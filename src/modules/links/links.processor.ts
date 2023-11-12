@@ -37,6 +37,7 @@ export class LinkConsumer {
               version: osVersion,
             },
           },
+          isBot,
         },
         ip,
         link,
@@ -55,7 +56,7 @@ export class LinkConsumer {
       osFamily,
     };
 
-    if (!Object.keys(job.data.detectorResult.botResult).length) {
+    if (!isBot) {
       try {
         const { data } = await axios.get<IpwhoisResponse>(`${url}/${ip}`);
 

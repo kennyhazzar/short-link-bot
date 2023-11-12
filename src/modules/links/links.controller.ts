@@ -15,6 +15,7 @@ import { detector } from '../../common/utils';
 import { DetectorResult, JobHistory, TelegrafConfigs } from '../../common';
 import { ConfigService } from '@nestjs/config';
 import { ApiExcludeEndpoint } from '@nestjs/swagger';
+import isBot from 'isbot';
 
 @Controller('links')
 export class LinksController {
@@ -34,8 +35,6 @@ export class LinksController {
     @Req() request: Request,
     @Ip() ip: string,
   ) {
-    this.logger.log(`redirecting: ${alias}`);
-
     const link = await this.linksService.getById(alias);
     const userAgent = request.headers['user-agent'];
 
@@ -48,8 +47,16 @@ export class LinksController {
     } else {
       const detectorResult: DetectorResult = {
         result: detector.detect(request.headers['user-agent']),
-        botResult: detector.parseBot(request.headers['user-agent']),
+        isBot: isBot(userAgent),
       };
+
+      this.logger.log(
+        `
+        redirecting: ${alias}
+        isBot: ${detectorResult.isBot}
+        userAgent: ${userAgent}
+        `,
+      );
 
       this.linkQueue.add('history', {
         detectorResult,
