@@ -4,7 +4,7 @@ import { UsersService } from '../../users/users.service';
 import { getTextByLanguageCode } from '../../../common/utils';
 import { Message } from 'telegraf/typings/core/types/typegram';
 import { ConfigService } from '@nestjs/config';
-import { TelegrafConfigs } from '../../../common';
+import { CommonConfigs } from '../../../common';
 
 @Update()
 export class MainUpdate {
@@ -19,12 +19,12 @@ export class MainUpdate {
     const notFoundCommand = '/start not_found_';
 
     if (message.text.includes(notFoundCommand)) {
-      const { url } = this.configService.get<TelegrafConfigs>('tg');
+      const { appUrl } = this.configService.get<CommonConfigs>('common');
 
       ctx.reply(
         getTextByLanguageCode(ctx.from.language_code, 'link_not_found').replace(
           '%link%',
-          `${url}/${message.text.split(notFoundCommand)[1]}`,
+          `${appUrl}/${message.text.split(notFoundCommand)[1]}`,
         ),
         {
           parse_mode: 'Markdown',
