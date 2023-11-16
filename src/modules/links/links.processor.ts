@@ -1,7 +1,7 @@
 import { Process, Processor } from '@nestjs/bull';
 import { Logger } from '@nestjs/common';
 import { Job } from 'bull';
-import { UpdateHistoryDto } from './dto/link.dto';
+import { UpdateHistoryDto } from './dto';
 import { LinksService } from './links.service';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';

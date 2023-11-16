@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { History } from './entities/history.entity';
 import { FindOptionsOrderValue, FindOptionsWhere, Repository } from 'typeorm';
 import { Link } from './entities/link.entity';
-import { InsertLinkDto, UpdateHistoryDto } from './dto/link.dto';
+import { InsertLinkDto, UpdateHistoryDto } from './dto';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { CACHE_LINK_TTL } from '../../common';

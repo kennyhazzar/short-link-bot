@@ -31,4 +31,19 @@ export const texts: Localization[] = [
     ru: 'Ссылка `%link%` не найдена',
     en: 'Link `%link%` not found',
   },
+  {
+    target: 'create_token',
+    ru: 'Ваш токен: `%token%`. Используйте заголовок authorization при запросах.\nДокументация: https://srlk.ru/docs',
+    en: 'Your token: `%token%`. Use the authorization header when making requests.\nDocumentation: https://srlk.ru/docs',
+  },
+  {
+    target: 'revoke_token',
+    ru: 'Токен `%token%` был отозван',
+    en: 'Token `%token%` has been revoked',
+  },
+  {
+    target: 'token',
+    ru: 'Твой токен: %token%. Используй его для работы с API. Чтобы отозвать токен, используй команду /revoke',
+    en: 'Your token: %token%. Use it to work with the API. To revoke a token, use /revoke',
+  },
 ];
