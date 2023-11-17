@@ -113,7 +113,7 @@ export class LinkConsumer {
     } catch (error) {}
 
     this.logger.warn(
-      `worker send_alias_link (alias: ${job.data.languageCode}): ${
+      `worker send_alias_link (alias: ${job.data.originalLink}): ${
         new Date().getTime() - startTime
       } ms`,
     );
@@ -156,7 +156,7 @@ export class LinkConsumer {
       data.url = url;
 
       this.logger.warn(
-        `worker process_link_preview (alias: ${job.data.languageCode}): ${
+        `worker process_link_preview (alias: ${job.data.alias}): ${
           new Date().getTime() - startTime
         } ms`,
       );
