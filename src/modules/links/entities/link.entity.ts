@@ -59,6 +59,15 @@ export class Link extends BaseEntity {
   redirectsCount: number;
 
   @ApiProperty({
+    name: 'description',
+    description:
+      'Описание ссылки. Можно отправить вместе с ссылкой через пробел',
+    type: String,
+  })
+  @Column({ nullable: true })
+  description?: string;
+
+  @ApiProperty({
     name: 'creator',
     description:
       'Объект пользователя, который создал ссылку. В БД определяется как вторичный ключ к таблице User (Многие-К-Одному)',
