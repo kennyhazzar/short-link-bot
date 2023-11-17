@@ -1,7 +1,7 @@
 import { Process, Processor } from '@nestjs/bull';
 import { Logger } from '@nestjs/common';
 import { Job } from 'bull';
-import { UpdateHistoryDto } from './dto';
+import { UpdateHistoryDto, UpdateLinkDto } from './dto';
 import { LinksService } from './links.service';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
@@ -9,6 +9,7 @@ import {
   DetectorResult,
   IpwhoisConfigs,
   IpwhoisResponse,
+  JobGetLinkPreview,
   JobHistory,
   JobSendAliasLink,
 } from '../../common';
@@ -20,6 +21,7 @@ import {
 import { InjectBot } from 'nestjs-telegraf';
 import { Context, Telegraf } from 'telegraf';
 import isbot from 'isbot';
+import { getLinkPreview } from 'link-preview-js';
 
 @Processor('link_queue')
 export class LinkConsumer {
@@ -107,5 +109,43 @@ export class LinkConsumer {
         },
       );
     } catch (error) {}
+  }
+
+  @Process('process_link_preview')
+  async processLinkPreview(job: Job<JobGetLinkPreview>) {
+    const { alias, url } = job.data;
+    const languageCode = job.data?.languageCode;
+    try {
+      const headers: Record<string, string> = {
+        'user-agent': 'googlebot',
+      };
+
+      if (languageCode) {
+        headers['Accept-Language'] = languageCode;
+      }
+
+      const data = (await getLinkPreview(url, {
+        followRedirects: 'follow',
+        handleRedirects: (baseURL: string, forwardedURL: string) => {
+          const urlObj = new URL(baseURL);
+          const forwardedURLObj = new URL(forwardedURL);
+          if (
+            forwardedURLObj.hostname === urlObj.hostname ||
+            forwardedURLObj.hostname === 'www.' + urlObj.hostname ||
+            'www.' + forwardedURLObj.hostname === urlObj.hostname
+          ) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+        headers,
+        timeout: 1200,
+      })) as unknown as UpdateLinkDto;
+
+      this.linkService.updateLinkByAlias(alias, data);
+    } catch (error) {
+      this.logger.error(error);
+    }
   }
 }

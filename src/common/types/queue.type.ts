@@ -12,3 +12,9 @@ export class JobSendAliasLink {
   telegramId: number;
   languageCode: string;
 }
+
+export class JobGetLinkPreview {
+  url: string;
+  alias: string;
+  languageCode?: string;
+}

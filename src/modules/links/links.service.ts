@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { History } from './entities/history.entity';
 import { FindOptionsOrderValue, FindOptionsWhere, Repository } from 'typeorm';
 import { Link } from './entities/link.entity';
-import { InsertLinkDto, UpdateHistoryDto } from './dto';
+import { InsertLinkDto, UpdateHistoryDto, UpdateLinkDto } from './dto';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { CACHE_LINK_TTL } from '../../common';
@@ -97,6 +97,20 @@ export class LinksService {
       take,
       relations: { creator: true },
     });
+  }
+
+  async updateLinkByAlias(
+    alias: string,
+    payload: UpdateLinkDto,
+  ): Promise<void> {
+    const cacheKey = `link_${alias}`;
+
+    const link = await this.linkRepository.findOne({ where: { alias } });
+
+    if (link) {
+      await this.linkRepository.save({ ...link, ...payload });
+      await this.cacheManager.set(cacheKey, { ...link, ...payload });
+    }
   }
 
   async deleteLinkByAlias(alias: string): Promise<void> {

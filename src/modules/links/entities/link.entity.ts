@@ -59,10 +59,53 @@ export class Link extends BaseEntity {
   redirectsCount: number;
 
   @ApiProperty({
-    name: 'description',
+    name: 'title',
     description:
-      'Описание ссылки. Можно отправить вместе с ссылкой через пробел',
-    type: String,
+      'Заголовок сайта. Парсится автоматически после создания ссылки',
+  })
+  @Column({ nullable: true })
+  title?: string;
+
+  @ApiProperty({
+    name: 'siteName',
+    description: 'Название сайта. Парсится автоматически после создания ссылки',
+  })
+  @Column({ nullable: true })
+  siteName?: string;
+
+  @ApiProperty({
+    name: 'images',
+    description:
+      'Картинки предпросмотра. Парсится автоматически после создания ссылки',
+    isArray: true,
+  })
+  @Column({ type: 'text', nullable: true, array: true })
+  images?: string[];
+
+  @ApiProperty({
+    name: 'mediaType',
+    description: 'Тип медиа.  Парсится автоматически после создания ссылки',
+  })
+  @Column({ nullable: true })
+  mediaType?: string;
+
+  @ApiProperty({
+    name: 'contentType',
+    description: 'Тип контента. Парсится автоматически после создания ссылки',
+  })
+  @Column({ nullable: true })
+  contentType?: string;
+
+  @ApiProperty({
+    name: 'favicons',
+    description: 'Иконки сайта. Парсится автоматически после создания ссылки',
+  })
+  @Column({ type: 'text', nullable: true, array: true })
+  favicons?: string[];
+
+  @ApiProperty({
+    name: 'description',
+    description: 'Описание сайта. Парсится автоматически после создания ссылки',
   })
   @Column({ nullable: true })
   description?: string;

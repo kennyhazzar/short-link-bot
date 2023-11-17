@@ -17,7 +17,7 @@ export class TextUpdate {
   constructor(
     private readonly linksService: LinksService,
     private configService: ConfigService,
-    @InjectQueue('link_queue') private linkQueue: Queue<JobSendAliasLink>,
+    @InjectQueue('link_queue') private linkQueue: Queue,
   ) {}
 
   @On('text')
@@ -67,15 +67,23 @@ export class TextUpdate {
       }
 
       const alias = generateId();
-      this.linksService.createLink({ url, alias }, ctx.chat.id);
       const shortLink = `${appUrl}/${alias}`;
 
-      this.linkQueue.add('send_alias_link', {
-        shortLink,
-        originalLink: url,
-        telegramId: ctx.chat.id,
-        languageCode,
-      });
+      await this.linksService.createLink({ url, alias }, ctx.chat.id);
+
+      Promise.allSettled([
+        this.linkQueue.add('send_alias_link', {
+          shortLink,
+          originalLink: url,
+          telegramId: ctx.chat.id,
+          languageCode,
+        }),
+        this.linkQueue.add('process_link_preview', {
+          url,
+          alias,
+          languageCode,
+        }),
+      ]);
     } else {
       ctx.reply(getTextByLanguageCode(languageCode, 'validation_error'));
     }

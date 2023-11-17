@@ -38,6 +38,7 @@
         "geojson": "^0.5.0",
         "isbot": "^3.7.0",
         "joi": "^17.11.0",
+        "link-preview-js": "^3.0.5",
         "mysql2": "^3.6.3",
         "nestjs-telegraf": "^2.7.0",
         "node-device-detector": "^2.0.17",
