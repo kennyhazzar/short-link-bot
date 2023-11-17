@@ -90,6 +90,8 @@ export class LinkConsumer {
 
   @Process('send_alias_link')
   async processingQRCode(job: Job<JobSendAliasLink>) {
+    const startTime = new Date().getTime();
+
     const { telegramId, shortLink: url, originalLink, languageCode } = job.data;
     const text = getTextByLanguageCode(languageCode, 'short_link_result', {
       original: originalLink,
@@ -109,10 +111,18 @@ export class LinkConsumer {
         },
       );
     } catch (error) {}
+
+    this.logger.warn(
+      `worker send_alias_link (alias: ${job.data.languageCode}): ${
+        new Date().getTime() - startTime
+      } ms`,
+    );
   }
 
   @Process('process_link_preview')
   async processLinkPreview(job: Job<JobGetLinkPreview>) {
+    const startTime = new Date().getTime();
+
     const { alias, url } = job.data;
     const languageCode = job.data?.languageCode;
     try {
@@ -145,7 +155,11 @@ export class LinkConsumer {
 
       data.url = url;
 
-      this.logger.warn(data);
+      this.logger.warn(
+        `worker process_link_preview (alias: ${job.data.languageCode}): ${
+          new Date().getTime() - startTime
+        } ms`,
+      );
 
       this.linkService.updateLinkByAlias(alias, data);
     } catch (error) {

@@ -7,7 +7,7 @@ import {
 } from '../../../common/utils';
 import { LinksService } from '../../links/links.service';
 import { ConfigService } from '@nestjs/config';
-import { CommonConfigs, JobSendAliasLink } from '../../../common';
+import { CommonConfigs } from '../../../common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { Message } from 'telegraf/typings/core/types/typegram';
@@ -72,17 +72,29 @@ export class TextUpdate {
       await this.linksService.createLink({ url, alias }, ctx.chat.id);
 
       Promise.allSettled([
-        this.linkQueue.add('send_alias_link', {
-          shortLink,
-          originalLink: url,
-          telegramId: ctx.chat.id,
-          languageCode,
-        }),
-        this.linkQueue.add('process_link_preview', {
-          url,
-          alias,
-          languageCode,
-        }),
+        this.linkQueue.add(
+          'send_alias_link',
+          {
+            shortLink,
+            originalLink: url,
+            telegramId: ctx.chat.id,
+            languageCode,
+          },
+          {
+            priority: 1,
+          },
+        ),
+        this.linkQueue.add(
+          'process_link_preview',
+          {
+            url,
+            alias,
+            languageCode,
+          },
+          {
+            priority: 10,
+          },
+        ),
       ]);
     } else {
       ctx.reply(getTextByLanguageCode(languageCode, 'validation_error'));
