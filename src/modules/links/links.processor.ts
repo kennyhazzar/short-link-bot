@@ -143,6 +143,8 @@ export class LinkConsumer {
         timeout: 1200,
       })) as unknown as UpdateLinkDto;
 
+      data.url = url;
+
       this.logger.warn(data);
 
       this.linkService.updateLinkByAlias(alias, data);

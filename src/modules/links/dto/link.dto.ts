@@ -47,6 +47,7 @@ export class UpdateHistoryDto {
 }
 
 export class UpdateLinkDto {
+  url: string | undefined;
   title: string | undefined;
   siteName: string | undefined;
   images: string[] | undefined;
