@@ -22,10 +22,9 @@ export class MainUpdate {
       const { appUrl } = this.configService.get<CommonConfigs>('common');
 
       ctx.reply(
-        getTextByLanguageCode(ctx.from.language_code, 'link_not_found').replace(
-          '%link%',
-          `${appUrl}/${message.text.split(notFoundCommand)[1]}`,
-        ),
+        getTextByLanguageCode(ctx.from.language_code, 'link_not_found', {
+          link: `${appUrl}/${message.text.split(notFoundCommand)[1]}`,
+        }),
         {
           parse_mode: 'Markdown',
         },

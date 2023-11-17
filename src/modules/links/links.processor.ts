@@ -89,9 +89,10 @@ export class LinkConsumer {
   @Process('send_alias_link')
   async processingQRCode(job: Job<JobSendAliasLink>) {
     const { telegramId, shortLink: url, originalLink, languageCode } = job.data;
-    const text = getTextByLanguageCode(languageCode, 'short_link_result')
-      .replace('%original%', originalLink)
-      .replace('%short%', url);
+    const text = getTextByLanguageCode(languageCode, 'short_link_result', {
+      original: originalLink,
+      short: url,
+    });
 
     try {
       const source = await generateQR(job.data.shortLink);
