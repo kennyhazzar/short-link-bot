@@ -59,6 +59,15 @@ export class Link extends BaseEntity {
   redirectsCount: number;
 
   @ApiProperty({
+    name: 'isSubscribe',
+    description: 'Флаг подписки на переходы по ссылке',
+    default: false,
+    example: true,
+  })
+  @Column({ default: false })
+  isSubscribe: boolean;
+
+  @ApiProperty({
     name: 'title',
     description:
       'Заголовок сайта. Парсится автоматически после создания ссылки',

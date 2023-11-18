@@ -65,6 +65,7 @@ export class LinksService {
     if (!link) {
       link = await this.linkRepository.findOne({
         where,
+        relations: ['creator'],
       });
       if (link) {
         this.cacheManager.set(cacheKey, link, CACHE_LINK_TTL);
@@ -95,7 +96,7 @@ export class LinksService {
       order: { createdAt: orderType },
       skip,
       take,
-      relations: { creator: true },
+      relations: ['creator'],
     });
   }
 
@@ -136,7 +137,7 @@ export class LinksService {
       order: { createdAt: orderType },
       skip,
       take,
-      relations: { link: true },
+      relations: ['link'],
     });
   }
 }

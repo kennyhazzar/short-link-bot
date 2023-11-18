@@ -3,8 +3,13 @@ import { Localization } from '../../types';
 export const texts: Localization[] = [
   {
     target: 'start',
-    ru: 'Добро пожаловать! Здесь вы можете создавать короткие ссылки. Ссылки сохраняют количество переходов, а также ведут историю переходов с подробной информацией. Но в данный момент это не отображается.\n1. Чтобы создать ссылку, просто отправьте ее текстом\n2. Чтобы посмотреть количество переходов по ссылке, отправьте короткую версию ссылки\nРазработчик: @kennyhazzar',
-    en: 'Welcome! Here you can create short links. Links store the number of clicks and also provide a click history with detailed information. But this is not displayed at the moment.\n1. To create a link, simply edit its text\n2. To see the number of clicks on a link, edit the short version of the link\nDeveloper: @kennyhazzar',
+    ru: 'Добро пожаловать! Здесь вы можете создавать короткие ссылки. Ссылки сохраняют количество переходов, а также ведут историю переходов с подробной информацией. Но в данный момент это не отображается.\n1. Чтобы создать ссылку, просто отправьте ее текстом\n2. Чтобы посмотреть количество переходов по ссылке, отправьте короткую версию ссылки\n3. Воспользуйтесь командой /sub для получения инструкций по отслеживанию переходов по ссылкам\nРазработчик: @kennyhazzar',
+    en: 'Welcome! Here you can create short links. Links store the number of clicks and also provide a click history with detailed information. But this is not displayed at the moment.\n1. To create a link, simply edit its text\n2. To see the number of clicks on a link, edit the short version of the link\n3. Use the /sub command for instructions on how to track redirects history in real-time\nDeveloper: @kennyhazzar',
+  },
+  {
+    target: 'sub_help',
+    ru: 'С помощью команды /sub <short-url> вы можете подписаться или отписаться на переходы по ссылке. Т.е. при переходе по ссылке, вы будете получать уведомления о переходе',
+    en: 'Using the command /sub <short-url> you can subscribe or unsubscribe to clicks. When you follow a link, you will receive notifications about the redirects',
   },
   {
     target: 'short_link_result',
@@ -45,5 +50,20 @@ export const texts: Localization[] = [
     target: 'token',
     ru: 'Твой токен: %token%. Используй его для работы с API. Чтобы отозвать токен, используй команду /revoke',
     en: 'Your token: %token%. Use it to work with the API. To revoke a token, use /revoke',
+  },
+  {
+    target: 'wrong_app_url_on_subscribe',
+    ru: 'В вашей ссылке нет нашего домена. Перепроверьте ссылку и отправьте еще раз',
+    en: 'Your link does not contain our domain. Please double check the link and submit again',
+  },
+  {
+    target: 'subscribe_true',
+    ru: 'Вы успешно подписались на обновления ссылки `%link%`',
+    en: 'You have successfully subscribed to `%link%` updates',
+  },
+  {
+    target: 'subscribe_false',
+    ru: 'Вы успешно отписались от обновлений на ссылку `%link%`',
+    en: 'You have successfully unsubscribed to `%link%` updates',
   },
 ];

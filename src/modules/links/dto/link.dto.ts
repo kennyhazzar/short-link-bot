@@ -47,12 +47,13 @@ export class UpdateHistoryDto {
 }
 
 export class UpdateLinkDto {
-  url: string | undefined;
-  title: string | undefined;
-  siteName: string | undefined;
-  images: string[] | undefined;
-  mediaType: string | undefined;
-  contentType: string | undefined;
-  favicons: string[] | undefined;
-  description: string | undefined;
+  url?: string | undefined;
+  title?: string | undefined;
+  siteName?: string | undefined;
+  images?: string[] | undefined;
+  mediaType?: string | undefined;
+  contentType?: string | undefined;
+  favicons?: string[] | undefined;
+  description?: string | undefined;
+  isSubscribe?: boolean | undefined;
 }

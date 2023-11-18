@@ -6,6 +6,7 @@ import { LinksService } from './links.service';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import {
+  CommonConfigs,
   DetectorResult,
   IpwhoisConfigs,
   IpwhoisResponse,
@@ -75,6 +76,20 @@ export class LinkConsumer {
             type: 'Point',
             coordinates: [longitude, latitude],
           };
+
+          if (link.isSubscribe) {
+            const { appUrl } = this.configService.get<CommonConfigs>('common');
+
+            this.bot.telegram.sendMessage(
+              link.creator.telegramId,
+              `По вашей ссылке прошли!\n🗺️ Место: \`${data.city}\`, \`${data.country}\` (IP = \`${data.ip}\`)\n ` +
+                `📱💻 Устройство:\n\`${userAgent}\`\n🔗 Ссылка: ${appUrl}/${link.alias}`,
+              {
+                parse_mode: 'Markdown',
+                disable_web_page_preview: true,
+              },
+            );
+          }
         }
       } catch (error: any) {
         console.log(error);
