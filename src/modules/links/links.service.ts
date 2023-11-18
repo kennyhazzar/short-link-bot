@@ -106,7 +106,10 @@ export class LinksService {
   ): Promise<void> {
     const cacheKey = `link_${alias}`;
 
-    const link = await this.linkRepository.findOne({ where: { alias } });
+    const link = await this.linkRepository.findOne({
+      where: { alias },
+      relations: ['creator'],
+    });
 
     if (link) {
       await this.linkRepository.save({ ...link, ...payload });

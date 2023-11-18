@@ -22,7 +22,6 @@ export class LinksController {
   @Redirect()
   async redirect(@Param('alias') alias: string, @Req() request: Request) {
     const link = await this.linksService.getById(alias);
-    console.log(link);
     const userAgent = request.headers['user-agent'];
     const ip =
       (request.headers['x-real-ip'] as string) ||
