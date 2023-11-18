@@ -89,12 +89,6 @@ export class LinkConsumer {
                 disable_web_page_preview: true,
               },
             );
-
-            await this.bot.telegram.sendLocation(
-              link.creator.telegramId,
-              data.latitude,
-              data.longitude,
-            );
           }
         }
       } catch (error: any) {
