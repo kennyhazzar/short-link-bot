@@ -12,17 +12,19 @@ import { UsersModule } from '../users/users.module';
 import { RedisClientOptions } from 'redis';
 import { CacheModule } from '@nestjs/cache-manager';
 import { CacheConfig } from '../../common';
+import { PreviewConsumer } from './preview.processor';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, Link, History]),
     BullModule.registerQueueAsync({ name: 'link_queue' }),
+    BullModule.registerQueueAsync({ name: 'preview_queue' }),
     CacheModule.registerAsync<RedisClientOptions>(CacheConfig),
     ConfigModule,
     UsersModule,
   ],
   controllers: [LinksController],
-  providers: [LinksService, LinkConsumer],
+  providers: [LinksService, LinkConsumer, PreviewConsumer],
   exports: [LinksService],
 })
 export class LinksModule {}

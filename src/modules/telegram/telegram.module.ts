@@ -11,6 +11,7 @@ import { BullModule } from '@nestjs/bull';
     LinksModule,
     ConfigModule,
     BullModule.registerQueueAsync({ name: 'link_queue' }),
+    BullModule.registerQueueAsync({ name: 'preview_queue' }),
   ],
   providers: [MainUpdate, TextUpdate],
 })
