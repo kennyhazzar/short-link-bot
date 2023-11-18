@@ -83,7 +83,7 @@ export class LinkConsumer {
             await this.bot.telegram.sendMessage(
               link.creator.telegramId,
               `По вашей ссылке прошли!\n🗺️ Место: \`${data.city}\`, \`${data.country}\` (IP = \`${data.ip}\`)\n ` +
-                `📱💻 Устройство:\n\`${userAgent}\`\n🔗 Ссылка: ${appUrl}/${link.alias}`,
+                `📱💻 Устройство:\n\`${userAgent}\`\n🔗 Ссылка: \`${appUrl}/${link.alias}\``,
               {
                 parse_mode: 'Markdown',
                 disable_web_page_preview: true,
