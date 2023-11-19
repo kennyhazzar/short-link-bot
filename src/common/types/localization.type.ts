@@ -11,7 +11,8 @@ export type Target =
   | 'wrong_app_url_on_subscribe'
   | 'subscribe_true'
   | 'subscribe_false'
-  | 'sub_help';
+  | 'sub_help'
+  | 'new_redirect';
 
 export class Localization {
   target: Target;

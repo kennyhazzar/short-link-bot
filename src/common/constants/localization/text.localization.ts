@@ -66,4 +66,9 @@ export const texts: Localization[] = [
     ru: 'Вы успешно отписались от обновлений на ссылку `%link%`',
     en: 'You have successfully unsubscribed to `%link%` updates',
   },
+  {
+    target: 'new_redirect',
+    ru: 'По вашей ссылке прошли!\n🗺️ Место: `%city%`, `%country%` (IP = `%ip%`)\n📱💻 Устройство:`%userAgent%`\n🔗 Ссылка: `%link%`',
+    en: 'A user clicked on your link!\n🗺️ Location: `%city%`, `%country%` (IP = `%ip%`)\n📱💻 Device:\n`%userAgent%`\n🔗 Link: `%link%`',
+  },
 ];

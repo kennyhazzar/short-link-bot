@@ -80,15 +80,22 @@ export class LinkConsumer {
           if (link.isSubscribe) {
             const { appUrl } = this.configService.get<CommonConfigs>('common');
 
-            await this.bot.telegram.sendMessage(
-              link.creator.telegramId,
-              `По вашей ссылке прошли!\n🗺️ Место: \`${data.city}\`, \`${data.country}\` (IP = \`${data.ip}\`)\n ` +
-                `📱💻 Устройство:\n\`${userAgent}\`\n🔗 Ссылка: \`${appUrl}/${link.alias}\``,
+            const text = getTextByLanguageCode(
+              job.data.link.creator.languageCode,
+              'new_redirect',
               {
-                parse_mode: 'Markdown',
-                disable_web_page_preview: true,
+                city,
+                country,
+                ip,
+                userAgent,
+                link: `${appUrl}/${link.alias}`,
               },
             );
+
+            await this.bot.telegram.sendMessage(link.creator.telegramId, text, {
+              parse_mode: 'Markdown',
+              disable_web_page_preview: true,
+            });
           }
         }
       } catch (error: any) {
