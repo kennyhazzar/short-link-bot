@@ -4,3 +4,7 @@ export class InsertUserDto {
   email?: string;
   languageCode?: string;
 }
+
+export class UpdateUserDto {
+  languageCode?: string;
+}

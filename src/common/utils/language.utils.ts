@@ -1,8 +1,8 @@
 import { texts } from '../constants';
-import { Target } from '../types';
+import { LanguageCode, Target } from '../types';
 
 export const getTextByLanguageCode = (
-  languageCode: string,
+  languageCode: LanguageCode,
   userTarget: Target,
   wordsToReplace?: Record<string, string>,
 ): string => {
@@ -21,4 +21,13 @@ export const getTextByLanguageCode = (
   }
 
   return result;
+};
+
+export const getLanguageByCode = (languageCode: LanguageCode) => {
+  const texts: Record<LanguageCode, { ru: string; en: string }> = {
+    ru: { ru: 'Русский', en: 'Russian' },
+    en: { ru: 'Английский', en: 'English' },
+  };
+
+  return texts[languageCode];
 };

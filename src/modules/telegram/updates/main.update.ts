@@ -1,10 +1,12 @@
 import { Update, Use } from 'nestjs-telegraf';
-import { Context } from 'telegraf';
 import { UsersService } from '../../users/users.service';
 import { getTextByLanguageCode } from '../../../common/utils';
-import { Message } from 'telegraf/typings/core/types/typegram';
+import {
+  Message,
+  Update as TelegrafUpdate,
+} from 'telegraf/typings/core/types/typegram';
 import { ConfigService } from '@nestjs/config';
-import { CommonConfigs } from '../../../common';
+import { CommonConfigs, MainUpdateContext } from '../../../common';
 
 @Update()
 export class MainUpdate {
@@ -14,11 +16,14 @@ export class MainUpdate {
   ) {}
 
   @Use()
-  async checkUser(ctx: Context, next: () => Promise<void>) {
+  async checkUser(ctx: MainUpdateContext, next: () => Promise<void>) {
     const message = ctx.message as Message.TextMessage;
     const notFoundCommand = '/start not_found_';
 
-    if (message.text.includes(notFoundCommand)) {
+    if (
+      (ctx.update as TelegrafUpdate.MessageUpdate)?.message &&
+      message.text.includes(notFoundCommand)
+    ) {
       const { appUrl } = this.configService.get<CommonConfigs>('common');
 
       ctx.reply(
@@ -35,14 +40,17 @@ export class MainUpdate {
 
     const user = await this.usersService.getByTelegramId(ctx.chat.id);
 
+    ctx.state.user = user;
+    const languageCode = ctx.from.language_code === 'en' ? 'en' : 'ru';
+
     if (!user) {
       await this.usersService.insert({
         telegramId: ctx.chat.id,
         username: ctx.from.username,
-        languageCode: ctx.from.language_code,
+        languageCode,
       });
 
-      ctx.reply(getTextByLanguageCode(ctx.from.language_code, 'start'));
+      ctx.reply(getTextByLanguageCode(languageCode, 'start'));
 
       return;
     }

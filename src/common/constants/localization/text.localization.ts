@@ -71,4 +71,14 @@ export const texts: Localization[] = [
     ru: 'По вашей ссылке прошли!\n🗺️ Место: `%city%`, `%country%` (IP = `%ip%`)\n📱💻 Устройство: `%userAgent%`\n🔗 Ссылка: `%link%`',
     en: 'New click!\n🗺️ Location: `%city%`, `%country%` (IP = `%ip%`)\n📱💻 Device: `%userAgent%`\n🔗 Link: `%link%`',
   },
+  {
+    target: 'language',
+    ru: 'Текущий язык помечен галочкой. Выбирайте язык нажатием кнопки. Текущий язык: %code%',
+    en: 'The current language is marked with a check mark. Select your language at the touch of a button. Current language: %code%',
+  },
+  {
+    target: 'language_error_current_choice',
+    ru: 'Вы уже выбрали этот язык',
+    en: 'You have already selected this language',
+  },
 ];

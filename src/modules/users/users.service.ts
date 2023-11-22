@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { InsertUserDto } from './dto/user.dto';
+import { InsertUserDto, UpdateUserDto } from './dto/user.dto';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { CACHE_USER_TTL } from '../../common';
@@ -39,15 +39,22 @@ export class UsersService {
     return user;
   }
 
-  public async updateById(telegramId: number, payload: User): Promise<void> {
-    const updatedUser = await this.userRepository.save({
-      telegramId,
-      ...payload,
-    });
-    this.cacheManager.set(
-      `user_${updatedUser.telegramId}`,
-      updatedUser,
-      CACHE_USER_TTL,
-    );
+  public async updateById(
+    telegramId: number,
+    payload: UpdateUserDto,
+  ): Promise<void> {
+    const user = await this.getByTelegramId(telegramId);
+
+    if (user) {
+      const updatedUser = await this.userRepository.save({
+        ...user,
+        ...payload,
+      });
+      this.cacheManager.set(
+        `user_${updatedUser.telegramId}`,
+        updatedUser,
+        CACHE_USER_TTL,
+      );
+    }
   }
 }

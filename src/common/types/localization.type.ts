@@ -12,7 +12,11 @@ export type Target =
   | 'subscribe_true'
   | 'subscribe_false'
   | 'sub_help'
-  | 'new_redirect';
+  | 'new_redirect'
+  | 'language'
+  | 'language_error_current_choice';
+
+export type LanguageCode = 'ru' | 'en' | string;
 
 export class Localization {
   target: Target;

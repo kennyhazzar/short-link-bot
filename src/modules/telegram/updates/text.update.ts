@@ -1,7 +1,7 @@
-import { On, Update } from 'nestjs-telegraf';
-import { Context } from 'telegraf';
+import { Action, On, Update } from 'nestjs-telegraf';
 import {
   generateId,
+  getLanguageByCode,
   getTextByLanguageCode,
   getValidUrlByMessageForSubscribeCommand,
   getValidUrlByTelegramUserMessage,
@@ -9,43 +9,94 @@ import {
 import { LinksService } from '../../links/links.service';
 import { ConfigService } from '@nestjs/config';
 import {
+  COMMANDS,
   CommonConfigs,
   JobGetLinkPreview,
   JobSendAliasLink,
+  MainUpdateContext,
   Target,
+  languageInlineKeyboard,
+  languageMenu,
 } from '../../../common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
-import { Message } from 'telegraf/typings/core/types/typegram';
+import {
+  Message,
+  Update as TelegrafUpdate,
+} from 'telegraf/typings/core/types/typegram';
+import { UsersService } from '../../users/users.service';
 
 @Update()
 export class TextUpdate {
   constructor(
     private readonly linksService: LinksService,
+    private readonly usersService: UsersService,
     private configService: ConfigService,
     @InjectQueue('link_queue') private linkQueue: Queue<JobSendAliasLink>,
     @InjectQueue('preview_queue')
     private previewQueue: Queue<JobGetLinkPreview>,
   ) {}
 
+  @Action(/language_+/)
+  async setLanguage(ctx: MainUpdateContext) {
+    const { callback_query: callbackQuery } =
+      ctx.update as TelegrafUpdate.CallbackQueryUpdate;
+
+    const [, languageCode] = (callbackQuery as any).data.split('_');
+
+    if (languageCode && languageCode === ctx.state.user.languageCode) {
+      ctx.answerCbQuery(
+        getTextByLanguageCode(
+          ctx.state.user.languageCode,
+          'language_error_current_choice',
+        ),
+      );
+
+      return;
+    }
+
+    await this.usersService.updateById(ctx.chat.id, {
+      languageCode,
+    });
+
+    await ctx.editMessageText(
+      getTextByLanguageCode(languageCode, 'language', {
+        code: getLanguageByCode(languageCode)[languageCode],
+      }),
+      {
+        reply_markup: {
+          inline_keyboard: languageInlineKeyboard(languageCode),
+        },
+      },
+    );
+  }
+
   @On('text')
-  async validateUrl(ctx: Context) {
+  async validateUrl(ctx: MainUpdateContext) {
     const message = ctx.message as Message.TextMessage;
-    const languageCode = ctx.from.language_code;
+    const languageCode = ctx.state.user.languageCode;
 
     if (
-      message.text.includes('/start') &&
-      message.entities.some(({ type }) => type === 'bot_command')
+      message.text.includes(COMMANDS.start) &&
+      message.entities.some(({ type }) => type === 'bot_command') &&
+      message.entities.length === 1
     ) {
       await this.startCommand(ctx);
       return;
     }
 
     if (
-      message.text.includes('/sub') &&
-      message.entities.some(({ type }) => type === 'bot_command')
+      message.text.includes(COMMANDS.subscribe) &&
+      message.entities.some(({ type }) => type === 'bot_command') &&
+      message.entities.length <= 2
     ) {
       await this.subscribeCommand(ctx);
+      return;
+    }
+
+    if (message.text.includes(COMMANDS.language)) {
+      await this.languageCommand(ctx);
+
       return;
     }
 
@@ -106,13 +157,13 @@ export class TextUpdate {
     }
   }
 
-  private async startCommand(ctx: Context) {
-    ctx.reply(getTextByLanguageCode(ctx.from.language_code, 'start'));
+  private async startCommand(ctx: MainUpdateContext) {
+    ctx.reply(getTextByLanguageCode(ctx.state.user.languageCode, 'start'));
   }
 
-  private async subscribeCommand(ctx: Context) {
+  private async subscribeCommand(ctx: MainUpdateContext) {
     const message = ctx.message as Message.TextMessage;
-    const languageCode = ctx.from.language_code;
+    const languageCode = ctx.state.user.languageCode;
 
     if (message.text === '/sub') {
       await ctx.reply(getTextByLanguageCode(languageCode, 'sub_help'));
@@ -170,5 +221,16 @@ export class TextUpdate {
     } else {
       await ctx.reply(getTextByLanguageCode(languageCode, 'validation_error'));
     }
+  }
+
+  private async languageCommand(ctx: MainUpdateContext) {
+    const languageCode = ctx.state.user.languageCode;
+
+    await ctx.reply(
+      getTextByLanguageCode(languageCode, 'language', {
+        code: getLanguageByCode(languageCode)[languageCode],
+      }),
+      languageMenu(languageCode),
+    );
   }
 }
