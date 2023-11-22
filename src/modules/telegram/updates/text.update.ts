@@ -55,8 +55,8 @@ export class TextUpdate {
     if (
       link.images !== undefined &&
       link.favicons !== undefined &&
-      link.images.length > 0 &&
-      link.favicons.length > 0
+      link.images?.length &&
+      link.favicons?.length
     ) {
       const images = [...link.images, ...link.favicons];
 

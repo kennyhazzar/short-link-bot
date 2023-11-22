@@ -24,6 +24,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
     BullModule.forRootAsync(BullConfig),
     TelegrafModule.forRootAsync(TelegrafConfig),
     ThrottlerModule.forRootAsync(ThrottlerConfig),
+    BullModule.registerQueueAsync({ name: 'link_queue' }),
     UsersModule,
     LinksModule,
     TelegramModule,
