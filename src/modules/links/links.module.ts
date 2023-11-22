@@ -14,7 +14,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { CacheConfig } from '../../common';
 import { PreviewConsumer } from './preview.processor';
 import { APP_GUARD } from '@nestjs/core';
-import { ThrottlerGuard } from '@nestjs/throttler';
+import { ThrottlerBehindProxyGuard } from '../auth/guard/throttler-behind-proxy.guard';
 
 @Module({
   imports: [
@@ -32,7 +32,7 @@ import { ThrottlerGuard } from '@nestjs/throttler';
     PreviewConsumer,
     {
       provide: APP_GUARD,
-      useClass: ThrottlerGuard,
+      useClass: ThrottlerBehindProxyGuard,
     },
   ],
   exports: [LinksService],
