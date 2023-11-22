@@ -83,8 +83,13 @@ export const texts: Localization[] = [
   },
   {
     target: 'show_link_media',
-    ru: 'Показать медиа-файлы',
-    en: 'Show media-files',
+    ru: 'Показать медиа-файлы (бета)',
+    en: 'Show media-files (beta)',
+  },
+  {
+    target: 'show_link_media_not_found',
+    ru: 'Оказывается, медиа-файлов нет!',
+    en: 'We do not found any media-files!',
   },
   {
     target: 'show_link_media_error',

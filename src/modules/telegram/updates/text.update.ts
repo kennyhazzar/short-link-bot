@@ -55,10 +55,9 @@ export class TextUpdate {
     if (
       link.images !== undefined &&
       link.favicons !== undefined &&
-      link.images.length &&
-      link.favicons.length
+      link.images.length > 0 &&
+      link.favicons.length > 0
     ) {
-    } else {
       const images = [...link.images, ...link.favicons];
 
       if (images.length > 10) {
@@ -98,6 +97,14 @@ export class TextUpdate {
       }
 
       return;
+    } else {
+      await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
+      ctx.answerCbQuery(
+        getTextByLanguageCode(languageCode, 'show_link_media_not_found'),
+        {
+          show_alert: true,
+        },
+      );
     }
   }
 
