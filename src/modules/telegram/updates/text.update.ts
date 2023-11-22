@@ -53,10 +53,10 @@ export class TextUpdate {
     );
 
     if (
-      link.images &&
-      link.favicons &&
-      !link.images.length &&
-      !link.favicons.length
+      link.images !== undefined &&
+      link.favicons !== undefined &&
+      link.images.length &&
+      link.favicons.length
     ) {
     } else {
       const images = [...link.images, ...link.favicons];
