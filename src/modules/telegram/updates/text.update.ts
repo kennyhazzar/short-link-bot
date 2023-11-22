@@ -134,14 +134,18 @@ export class TextUpdate {
 
                 return;
               } else {
-                const media: MediaGroup = [...link.images, ...link.favicons]
-                  .slice(9)
-                  .map((url) => ({
-                    type: 'photo',
-                    media: { url },
-                  }));
+                const images = [...link.images, ...link.favicons];
 
-                await ctx.replyWithMediaGroup(media, {});
+                if (images.length > 10) {
+                  images.length = 10;
+                }
+
+                const media: MediaGroup = images.map((url) => ({
+                  type: 'photo',
+                  media: { url },
+                }));
+
+                await ctx.replyWithMediaGroup(media);
                 ctx.reply(caption, {
                   parse_mode: 'Markdown',
                 });
