@@ -65,7 +65,7 @@ export class TextUpdate {
       }
 
       const media: MediaGroup = images
-        .filter((url) => !url.endsWith('svg'))
+        .filter((url) => !url.endsWith('svg') || !url.includes('.svg'))
         .map((url) => ({
           type: 'photo',
           media: { url },
