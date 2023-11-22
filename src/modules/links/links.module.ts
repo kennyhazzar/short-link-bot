@@ -14,7 +14,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { CacheConfig } from '../../common';
 import { PreviewConsumer } from './preview.processor';
 import { APP_GUARD } from '@nestjs/core';
-import { ThrottlerBehindProxyGuard } from '../auth/guard/throttler-behind-proxy.guard';
+import { ThrottlerBehindProxyGuard } from '../auth/guard';
 
 @Module({
   imports: [
