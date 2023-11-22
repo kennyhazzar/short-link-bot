@@ -64,11 +64,13 @@ export class TextUpdate {
         images.length = 10;
       }
 
-      const media: MediaGroup = images.map((url) => ({
-        type: 'photo',
-        media: { url },
-        caption: `original: ${url}`,
-      }));
+      const media: MediaGroup = images
+        .filter((url) => !url.endsWith('svg'))
+        .map((url) => ({
+          type: 'photo',
+          media: { url },
+          caption: `original: ${url}`,
+        }));
 
       try {
         await ctx.replyWithMediaGroup(media);
