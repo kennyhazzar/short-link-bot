@@ -3,9 +3,11 @@ import { AppModule } from './modules/app.module';
 import { ConfigService } from '@nestjs/config';
 import { CommonConfigs } from './common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.set('trust proxy', 'loopback');
 
   const { port } = app.get(ConfigService).get<CommonConfigs>('common');
 
