@@ -25,3 +25,8 @@ export class RedisConfigs {
 export class IpwhoisConfigs {
   url: string;
 }
+
+export class ThrottlerConfigs {
+  ttl: number;
+  limit: number;
+}

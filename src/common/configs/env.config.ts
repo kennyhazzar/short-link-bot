@@ -29,6 +29,11 @@ const redis = registerAs('redis', () => ({
   port: +process.env.REDIS_PORT,
 }));
 
+const throttler = registerAs('throttler', () => ({
+  ttl: +process.env.THROTTLE_TTL,
+  limit: +process.env.THROTTLE_LIMIT,
+}));
+
 export const EnvConfig: ConfigModuleOptions = {
   envFilePath: '.env',
   isGlobal: true,
@@ -44,6 +49,8 @@ export const EnvConfig: ConfigModuleOptions = {
     BOT_TOKEN: Joi.string().required(),
     BOT_URL: Joi.string().required(),
     APP_URL: Joi.string().required(),
+    THROTTLE_TTL: Joi.number().required(),
+    THROTTLE_LIMIT: Joi.number().required(),
   }),
-  load: [common, database, redis, ipwhois, telegram],
+  load: [common, database, redis, ipwhois, telegram, throttler],
 };

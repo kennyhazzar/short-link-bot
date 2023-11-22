@@ -4,6 +4,7 @@ import {
   BullConfig,
   EnvConfig,
   TelegrafConfig,
+  ThrottlerConfig,
   TypeormConfig,
 } from '../common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -14,6 +15,7 @@ import { AppController } from './app.controller';
 import { TelegrafModule } from 'nestjs-telegraf';
 import { TelegramModule } from './telegram/telegram.module';
 import { AuthModule } from './auth/auth.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -21,6 +23,7 @@ import { AuthModule } from './auth/auth.module';
     TypeOrmModule.forRootAsync(TypeormConfig),
     BullModule.forRootAsync(BullConfig),
     TelegrafModule.forRootAsync(TelegrafConfig),
+    ThrottlerModule.forRootAsync(ThrottlerConfig),
     UsersModule,
     LinksModule,
     TelegramModule,

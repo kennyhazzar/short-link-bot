@@ -13,6 +13,8 @@ import { RedisClientOptions } from 'redis';
 import { CacheModule } from '@nestjs/cache-manager';
 import { CacheConfig } from '../../common';
 import { PreviewConsumer } from './preview.processor';
+import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -24,7 +26,15 @@ import { PreviewConsumer } from './preview.processor';
     UsersModule,
   ],
   controllers: [LinksController],
-  providers: [LinksService, LinkConsumer, PreviewConsumer],
+  providers: [
+    LinksService,
+    LinkConsumer,
+    PreviewConsumer,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
   exports: [LinksService],
 })
 export class LinksModule {}
