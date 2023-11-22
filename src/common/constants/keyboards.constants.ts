@@ -17,17 +17,21 @@ export const languageInlineKeyboard = (
 ): InlineKeyboardButton[][] => [
   [
     {
-      text: `${getLanguageByCode('ru')[languageCode]}${
-        languageCode === 'ru' ? '✓' : ''
-      }`,
+      text: getLanguageButtonText(
+        languageCode,
+        'ru',
+        getLanguageByCode('ru')[languageCode],
+      ),
       callback_data: `${ACTIONS.setLanguage}ru`,
     },
   ],
   [
     {
-      text: `${getLanguageByCode('en')[languageCode]}${
-        languageCode === 'en' ? '✓' : ''
-      }`,
+      text: getLanguageButtonText(
+        languageCode,
+        'en',
+        getLanguageByCode('en')[languageCode],
+      ),
       callback_data: `${ACTIONS.setLanguage}en`,
     },
   ],
@@ -49,3 +53,13 @@ export const showMediaGroupMenu = (
   },
   parse_mode: 'Markdown',
 });
+
+const getLanguageButtonText = (
+  languageCode: LanguageCode,
+  targetLanguageCode: LanguageCode,
+  text: string,
+) => {
+  const dot = languageCode === targetLanguageCode ? '•' : '';
+
+  return `${dot} ${text} ${dot}`;
+};

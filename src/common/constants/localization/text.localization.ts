@@ -73,8 +73,8 @@ export const texts: Localization[] = [
   },
   {
     target: 'language',
-    ru: 'Текущий язык помечен галочкой. Выбирайте язык нажатием кнопки. Текущий язык: %code%',
-    en: 'The current language is marked with a check mark. Select your language at the touch of a button. Current language: %code%',
+    ru: 'Текущий язык помечен точками. Выбирайте язык нажатием кнопки. Текущий язык: %code%',
+    en: 'The current language is marked with a dots. Select your language at the touch of a button. Current language: %code%',
   },
   {
     target: 'language_error_current_choice',
