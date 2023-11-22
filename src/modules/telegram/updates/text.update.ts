@@ -145,10 +145,18 @@ export class TextUpdate {
                   media: { url },
                 }));
 
-                await ctx.replyWithMediaGroup(media);
-                ctx.reply(caption, {
-                  parse_mode: 'Markdown',
-                });
+                console.log(media);
+
+                try {
+                  await ctx.replyWithMediaGroup(media);
+                  ctx.reply(caption, {
+                    parse_mode: 'Markdown',
+                  });
+                } catch (error) {
+                  ctx.reply(caption, {
+                    parse_mode: 'Markdown',
+                  });
+                }
 
                 return;
               }
