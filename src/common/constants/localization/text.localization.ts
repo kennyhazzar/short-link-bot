@@ -81,4 +81,19 @@ export const texts: Localization[] = [
     ru: 'Вы уже выбрали этот язык',
     en: 'You have already selected this language',
   },
+  {
+    target: 'show_link_media',
+    ru: 'Показать медиа-файлы',
+    en: 'Show media-files',
+  },
+  {
+    target: 'show_link_media_error',
+    ru: 'Ошибка при получении медиа-файлов. Скорее всего их нет',
+    en: "Error while receiving media files. Most likely they don't exist",
+  },
+  {
+    target: 'show_link_media_success',
+    ru: 'Оригинальные ссылки изображений находятся в подписях изображений',
+    en: 'Original image links are in the image captions',
+  },
 ];

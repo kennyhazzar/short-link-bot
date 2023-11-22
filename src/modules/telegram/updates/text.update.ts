@@ -17,6 +17,7 @@ import {
   Target,
   languageInlineKeyboard,
   languageMenu,
+  showMediaGroupMenu,
 } from '../../../common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
@@ -37,6 +38,50 @@ export class TextUpdate {
     @InjectQueue('preview_queue')
     private previewQueue: Queue<JobGetLinkPreview>,
   ) {}
+
+  @Action(/media_+/)
+  async showLinkMedia(ctx: MainUpdateContext) {
+    const { callback_query: callbackQuery } =
+      ctx.update as TelegrafUpdate.CallbackQueryUpdate;
+    const languageCode = ctx.state.user.languageCode;
+
+    const [, alias] = (callbackQuery as any).data.split('_');
+
+    const link = await this.linksService.getByAliasAndTelegramId(
+      alias,
+      ctx.state.user.telegramId,
+    );
+
+    if (!link.images.length && !link.favicons.length) {
+    } else {
+      const images = [...link.images, ...link.favicons];
+
+      if (images.length > 10) {
+        images.length = 10;
+      }
+
+      const media: MediaGroup = images.map((url) => ({
+        type: 'photo',
+        media: { url },
+        caption: `original: ${url}`,
+      }));
+
+      try {
+        await ctx.replyWithMediaGroup(media);
+        await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
+        ctx.answerCbQuery(
+          getTextByLanguageCode(languageCode, 'show_link_media_success'),
+        );
+      } catch (error) {
+        console.log(error);
+        ctx.answerCbQuery(
+          getTextByLanguageCode(languageCode, 'show_link_media_error'),
+        );
+      }
+
+      return;
+    }
+  }
 
   @Action(/language_+/)
   async setLanguage(ctx: MainUpdateContext) {
@@ -127,38 +172,9 @@ export class TextUpdate {
                 isSubscribe: link.isSubscribe ? 'Да' : 'Нет',
               });
 
-              if (!link.images.length && !link.favicons.length) {
-                await ctx.reply(caption, {
-                  parse_mode: 'Markdown',
-                });
+              ctx.reply(caption, showMediaGroupMenu(languageCode, link.alias));
 
-                return;
-              } else {
-                const images = [...link.images, ...link.favicons];
-
-                if (images.length > 10) {
-                  images.length = 10;
-                }
-
-                const media: MediaGroup = images.map((url) => ({
-                  type: 'photo',
-                  media: { url },
-                  caption: `original: ${url}`,
-                }));
-
-                try {
-                  await ctx.replyWithMediaGroup(media);
-                  ctx.reply(caption, {
-                    parse_mode: 'Markdown',
-                  });
-                } catch (error) {
-                  ctx.reply(caption, {
-                    parse_mode: 'Markdown',
-                  });
-                }
-
-                return;
-              }
+              return;
             } else {
               ctx.reply(
                 getTextByLanguageCode(

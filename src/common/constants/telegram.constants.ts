@@ -1,5 +1,6 @@
 export enum ACTIONS {
   setLanguage = 'language_',
+  showMedia = 'media_',
 }
 
 export enum COMMANDS {

@@ -14,7 +14,10 @@ export type Target =
   | 'sub_help'
   | 'new_redirect'
   | 'language'
-  | 'language_error_current_choice';
+  | 'language_error_current_choice'
+  | 'show_link_media'
+  | 'show_link_media_error'
+  | 'show_link_media_success';
 
 export type LanguageCode = 'ru' | 'en' | string;
 
