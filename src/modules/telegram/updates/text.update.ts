@@ -145,8 +145,6 @@ export class TextUpdate {
                   media: { url },
                 }));
 
-                console.log(media);
-
                 try {
                   await ctx.replyWithMediaGroup(media);
                   ctx.reply(caption, {
