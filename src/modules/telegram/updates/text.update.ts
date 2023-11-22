@@ -63,10 +63,11 @@ export class TextUpdate {
       const media: MediaGroup = images
         .filter(
           (url) =>
-            !url.includes('svg') &&
-            (url.endsWith('png') ||
-              url.endsWith('jpg') ||
-              url.endsWith('jpeg')),
+            (!url.includes('svg') &&
+              (url.endsWith('png') ||
+                url.endsWith('jpg') ||
+                url.endsWith('jpeg'))) ||
+            url.endsWith('ico'),
         )
         .map((url) => ({
           type: 'photo',
