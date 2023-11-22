@@ -9,10 +9,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { LinksService } from './links.service';
-import { InjectQueue } from '@nestjs/bull';
-import { Queue } from 'bull';
-import { JobHistory } from '../../common';
-import { ConfigService } from '@nestjs/config';
 import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { MediaFiles } from './dto';
 import { ThrottlerBehindProxyGuard } from '../auth/guard';
@@ -21,11 +17,7 @@ import { ThrottlerBehindProxyGuard } from '../auth/guard';
 export class LinksController {
   private readonly logger = new Logger(LinksController.name);
 
-  constructor(
-    private readonly linksService: LinksService,
-    private readonly configService: ConfigService,
-    @InjectQueue('link_queue') private linkQueue: Queue<JobHistory>,
-  ) {}
+  constructor(private readonly linksService: LinksService) {}
 
   @Get('images')
   @ApiOperation({
