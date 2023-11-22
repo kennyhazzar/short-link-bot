@@ -74,6 +74,7 @@ export class TextUpdate {
         );
       } catch (error) {
         console.log(error);
+        await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
         ctx.answerCbQuery(
           getTextByLanguageCode(languageCode, 'show_link_media_error'),
         );
