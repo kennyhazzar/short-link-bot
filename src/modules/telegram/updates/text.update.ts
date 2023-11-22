@@ -143,6 +143,7 @@ export class TextUpdate {
                 const media: MediaGroup = images.map((url) => ({
                   type: 'photo',
                   media: { url },
+                  caption: `original: ${url}`,
                 }));
 
                 try {
