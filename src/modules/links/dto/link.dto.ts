@@ -57,3 +57,27 @@ export class UpdateLinkDto {
   description?: string | undefined;
   isSubscribe?: boolean | undefined;
 }
+
+export class MediaFiles {
+  @ApiProperty({
+    title: 'favicons',
+    description: 'Список значков веб-страницы',
+    isArray: true,
+    type: String,
+    example: ['https://somesite.com/favicon.ico'],
+  })
+  favicons: Array<string>;
+  @ApiProperty({
+    title: 'images',
+    description: 'Список картинок',
+    isArray: true,
+    type: String,
+    example: ['https://somesite.com/favicon.ico'],
+  })
+  images: Array<string>;
+}
+
+export class CacheMediaFiles {
+  telegramId: number;
+  alias: string;
+}

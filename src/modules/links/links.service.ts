@@ -1,13 +1,25 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { History } from './entities/history.entity';
-import { FindOptionsOrderValue, FindOptionsWhere, Repository } from 'typeorm';
+import {
+  FindOptionsOrderValue,
+  FindOptionsSelect,
+  FindOptionsWhere,
+  Repository,
+} from 'typeorm';
 import { Link } from './entities/link.entity';
-import { InsertLinkDto, UpdateHistoryDto, UpdateLinkDto } from './dto';
+import {
+  CacheMediaFiles,
+  InsertLinkDto,
+  MediaFiles,
+  UpdateHistoryDto,
+  UpdateLinkDto,
+} from './dto';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { CACHE_LINK_TTL } from '../../common';
+import { CACHE_LINK_TTL, IMAGE_LINK_TTL } from '../../common';
 import { User } from '../users/entities/user.entity';
+import { generateId } from '../../common/utils';
 
 @Injectable()
 export class LinksService {
@@ -74,7 +86,11 @@ export class LinksService {
     return link;
   }
 
-  async getByAliasAndTelegramId(alias: string, telegramId: number) {
+  async getByAliasAndTelegramId(
+    alias: string,
+    telegramId: number,
+    select: FindOptionsSelect<Link> = {},
+  ) {
     return await this.linkRepository.findOne({
       where: {
         alias,
@@ -82,6 +98,7 @@ export class LinksService {
           telegramId,
         },
       },
+      select,
     });
   }
 
@@ -142,5 +159,43 @@ export class LinksService {
       take,
       relations: ['link'],
     });
+  }
+
+  async getLinkImages(telegramId: number, alias: string): Promise<MediaFiles> {
+    const link = await this.getByAliasAndTelegramId(alias, telegramId, {
+      id: true,
+      favicons: true,
+      images: true,
+    });
+
+    if (link) {
+      return {
+        favicons: link.favicons,
+        images: link.images,
+      };
+    } else {
+      return {
+        favicons: [],
+        images: [],
+      };
+    }
+  }
+
+  async createImageLink(telegramId: number, alias: string): Promise<string> {
+    const imageId = generateId(10);
+
+    await this.cacheManager.set(
+      `images_${imageId}`,
+      { telegramId, alias },
+      IMAGE_LINK_TTL,
+    );
+
+    return imageId;
+  }
+
+  async getImagesByCache(
+    cacheKey: string,
+  ): Promise<CacheMediaFiles | undefined> {
+    return this.cacheManager.get<CacheMediaFiles>(`images_${cacheKey}`);
   }
 }

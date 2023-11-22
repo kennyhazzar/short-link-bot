@@ -1,11 +1,28 @@
-import { Controller, Get, Logger, Param, Redirect, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Logger,
+  NotFoundException,
+  Param,
+  Query,
+  Redirect,
+  Req,
+} from '@nestjs/common';
 import { LinksService } from './links.service';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { Request } from 'express';
 import { JobHistory, TelegrafConfigs } from '../../common';
 import { ConfigService } from '@nestjs/config';
-import { ApiExcludeEndpoint } from '@nestjs/swagger';
+import {
+  ApiExcludeEndpoint,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+} from '@nestjs/swagger';
+import { MediaFiles } from './dto';
 
 @Controller('links')
 export class LinksController {
@@ -16,6 +33,35 @@ export class LinksController {
     private readonly configService: ConfigService,
     @InjectQueue('link_queue') private linkQueue: Queue<JobHistory>,
   ) {}
+
+  @Get('images')
+  @ApiOperation({
+    summary: 'Метод для получения ссылок на медиа-файлы ссылки',
+    description:
+      'Ссылку можно получить только если медиа-файлы не удалось получить через Telegram. Доступ к медиа-файлам длится 20 минут',
+  })
+  @ApiResponse({
+    description:
+      'Объект с картинками. Данные медиа-файлы подгружаются при создании короткой ссылки',
+    type: MediaFiles,
+    status: HttpStatus.OK,
+  })
+  @ApiQuery({
+    name: 'id',
+    description: 'Идентификатор, полученный из чата с ботом',
+  })
+  @HttpCode(HttpStatus.OK)
+  async getLinkImages(@Query('id') imageId: string): Promise<MediaFiles> {
+    const imageCache = await this.linksService.getImagesByCache(imageId);
+
+    if (imageCache) {
+      const { telegramId, alias } = imageCache;
+
+      return this.linksService.getLinkImages(telegramId, alias);
+    } else {
+      throw new NotFoundException();
+    }
+  }
 
   @ApiExcludeEndpoint()
   @Get(':alias')

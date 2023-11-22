@@ -93,8 +93,8 @@ export const texts: Localization[] = [
   },
   {
     target: 'show_link_media_error',
-    ru: 'Ошибка при получении медиа-файлов. Скорее всего их нет',
-    en: "Error while receiving media files. Most likely they don't exist",
+    ru: 'Произошла ошибка при отправке медиа-файлов через Telegram. Используйте временную ссылку со списком ссылок медиа-файлов (20 минут): %link%',
+    en: 'An error occurred while sending media files via Telegram. Use a temporary link with a list of media file links (20 minutes): %link%',
   },
   {
     target: 'show_link_media_success',

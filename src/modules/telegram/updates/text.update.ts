@@ -88,11 +88,15 @@ export class TextUpdate {
       } catch (error) {
         console.log(error);
         await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
-        ctx.answerCbQuery(
-          getTextByLanguageCode(languageCode, 'show_link_media_error'),
-          {
-            show_alert: true,
-          },
+        const imageLink = await this.linksService.createImageLink(
+          ctx.state.user.telegramId,
+          alias,
+        );
+        const { appUrl } = this.configService.get<CommonConfigs>('common');
+        ctx.reply(
+          getTextByLanguageCode(languageCode, 'show_link_media_error', {
+            link: `${appUrl}/links/images?id=${imageLink}`,
+          }),
         );
       }
 
