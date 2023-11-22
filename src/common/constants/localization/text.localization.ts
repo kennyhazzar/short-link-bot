@@ -24,7 +24,7 @@ export const texts: Localization[] = [
   {
     target: 'link_info',
     ru: 'Заголовок: `%title%`\nОписание: `%description%`\nДата создания: `%createdAt%`\nОригинальная ссылка: `%originalLink%`\nКороткая версия: `%shortLink%`\nКоличество переходов: %redirectCount%\nПодписка: %isSubscribe%',
-    en: 'Title: `%title%`\nDescription: `%description%`\nDate of creation: `%createdAt%`\nOriginal link: `%originalLink%`\nShort version: `%shortLink%`\nRedirect count on the link: %redirectCount%\nПодписка: %isSubscribe%',
+    en: 'Title: `%title%`\nDescription: `%description%`\nDate of creation: `%createdAt%`\nOriginal link: `%originalLink%`\nShort version: `%shortLink%`\nRedirect count on the link: %redirectCount%\nSubscribe: %isSubscribe%',
   },
   {
     target: 'stats_error_link_does_not_found',
