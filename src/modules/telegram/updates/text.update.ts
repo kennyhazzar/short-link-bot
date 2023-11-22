@@ -173,7 +173,10 @@ export class TextUpdate {
                 originalLink: link.url,
                 shortLink: `${appUrl}/${link.alias}`,
                 redirectCount: String(link.redirectsCount),
-                isSubscribe: link.isSubscribe ? 'Да' : 'Нет',
+                isSubscribe: getTextByLanguageCode(
+                  languageCode,
+                  link.isSubscribe ? 'yes_particle' : 'no_particle',
+                ),
               });
 
               ctx.reply(caption, showMediaGroupMenu(languageCode, link.alias));

@@ -96,4 +96,14 @@ export const texts: Localization[] = [
     ru: 'Оригинальные ссылки изображений находятся в подписях изображений',
     en: 'Original image links are in the image captions',
   },
+  {
+    target: 'yes_particle',
+    ru: 'Да',
+    en: 'Yes',
+  },
+  {
+    target: 'no_particle',
+    ru: 'Нет',
+    en: 'No',
+  },
 ];

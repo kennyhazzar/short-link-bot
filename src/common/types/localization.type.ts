@@ -17,7 +17,9 @@ export type Target =
   | 'language_error_current_choice'
   | 'show_link_media'
   | 'show_link_media_error'
-  | 'show_link_media_success';
+  | 'show_link_media_success'
+  | 'yes_particle'
+  | 'no_particle';
 
 export type LanguageCode = 'ru' | 'en' | string;
 
