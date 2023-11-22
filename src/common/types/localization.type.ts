@@ -2,7 +2,7 @@ export type Target =
   | 'start'
   | 'short_link_result'
   | 'validation_error'
-  | 'stats'
+  | 'link_info'
   | 'stats_error_link_does_not_found'
   | 'link_not_found'
   | 'create_token'

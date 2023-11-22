@@ -22,9 +22,9 @@ export const texts: Localization[] = [
     en: 'Your link is invalid. Check your link and try again',
   },
   {
-    target: 'stats',
-    ru: 'Количество переходов по ссылке: ',
-    en: 'Redirect count on the link: ',
+    target: 'link_info',
+    ru: 'Заголовок: `%title%`\nОписание: `%description%`\nДата создания: `%createdAt%`\nОригинальная ссылка: `%originalLink%`\nКороткая версия: `%shortLink%`\nКоличество переходов: %redirectCount%\nПодписка: %isSubscribe%',
+    en: 'Title: `%title%`\nDescription: `%description%`\nDate of creation: `%createdAt%`\nOriginal link: `%originalLink%`\nShort version: `%shortLink%`\n Redirect count on the link: %redirectCount%\nПодписка: %isSubscribe%',
   },
   {
     target: 'stats_error_link_does_not_found',

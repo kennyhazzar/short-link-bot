@@ -25,6 +25,7 @@ import {
   Update as TelegrafUpdate,
 } from 'telegraf/typings/core/types/typegram';
 import { UsersService } from '../../users/users.service';
+import { MediaGroup } from 'telegraf/typings/telegram-types';
 
 @Update()
 export class TextUpdate {
@@ -116,11 +117,37 @@ export class TextUpdate {
             );
 
             if (link) {
-              const text = getTextByLanguageCode(languageCode, 'stats');
-
-              ctx.reply(text + link.redirectsCount, {
-                parse_mode: 'Markdown',
+              const caption = getTextByLanguageCode(languageCode, 'link_info', {
+                title: link.title || '`Отсутствует`',
+                description: link.description || '`Отсутствует`',
+                createdAt: link.createdAt.toISOString(),
+                originalLink: link.url,
+                shortLink: `${appUrl}/${link.alias}`,
+                redirectCount: String(link.redirectsCount),
+                isSubscribe: link.isSubscribe ? 'Да' : 'Нет',
               });
+
+              if (!link.images.length && !link.favicons.length) {
+                await ctx.reply(caption, {
+                  parse_mode: 'Markdown',
+                });
+
+                return;
+              } else {
+                const media: MediaGroup = [...link.images, ...link.favicons]
+                  .slice(9)
+                  .map((url) => ({
+                    type: 'photo',
+                    media: { url },
+                  }));
+
+                await ctx.replyWithMediaGroup(media, {});
+                ctx.reply(caption, {
+                  parse_mode: 'Markdown',
+                });
+
+                return;
+              }
             } else {
               ctx.reply(
                 getTextByLanguageCode(
