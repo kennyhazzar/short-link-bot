@@ -52,7 +52,7 @@ export class TextUpdate {
       ctx.state.user.telegramId,
     );
 
-    if (!link.images.length && !link.favicons.length) {
+    if (!link.images?.length && !link.favicons?.length) {
     } else {
       const images = [...link.images, ...link.favicons];
 
