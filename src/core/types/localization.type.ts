@@ -21,7 +21,10 @@ export type Target =
   | 'yes_particle'
   | 'no_particle'
   | 'show_link_media_not_found'
-  | 'property_value_not_found';
+  | 'property_value_not_found'
+  | 'subscribe_button_yes'
+  | 'subscribe_button_no'
+  | 'subscribe_internal_error';
 
 export type LanguageCode = 'ru' | 'en' | string;
 

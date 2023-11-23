@@ -10,15 +10,73 @@ import {
   languageInlineKeyboard,
   getTextByLanguageCode,
   getLanguageByCode,
+  getLinkInformationText,
+  showLinkInfoInlineKeyboard,
 } from '@core/index';
+import { Logger } from '@nestjs/common';
 
 @Update()
 export class ActionsUpdate {
+  private readonly logger = new Logger(ActionsUpdate.name);
+
   constructor(
     private readonly linksService: LinksService,
     private readonly usersService: UsersService,
     private readonly configService: ConfigService,
   ) {}
+
+  @Action(/subscribe_+/)
+  async setSubscribe(ctx: MainUpdateContext) {
+    const { callback_query: callbackQuery } =
+      ctx.update as TelegrafUpdate.CallbackQueryUpdate;
+    const languageCode = ctx.state.user.languageCode;
+
+    const [, alias] = (callbackQuery as any).data.split('_');
+    try {
+      let link = await this.linksService.getByAliasAndTelegramId(
+        alias,
+        ctx.chat.id,
+      );
+
+      if (link) {
+        link = await this.linksService.updateLinkByAlias(alias, {
+          isSubscribe: !link.isSubscribe,
+        });
+
+        const { appUrl } = this.configService.get<CommonConfigs>('common');
+
+        const caption = getLinkInformationText(languageCode, link, appUrl);
+
+        ctx.editMessageText(caption, {
+          reply_markup: {
+            inline_keyboard: showLinkInfoInlineKeyboard(languageCode, link),
+          },
+          disable_web_page_preview: true,
+          parse_mode: 'Markdown',
+        });
+      } else {
+        await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
+        await ctx.answerCbQuery(
+          getTextByLanguageCode(
+            languageCode,
+            'stats_error_link_does_not_found',
+          ),
+          {
+            show_alert: true,
+          },
+        );
+      }
+    } catch (error) {
+      this.logger.error(error);
+      await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
+      await ctx.answerCbQuery(
+        getTextByLanguageCode(languageCode, 'subscribe_internal_error'),
+        {
+          show_alert: true,
+        },
+      );
+    }
+  }
 
   @Action(/media_+/)
   async showLinkMedia(ctx: MainUpdateContext) {

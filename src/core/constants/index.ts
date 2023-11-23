@@ -4,3 +4,4 @@ export * from './cache.constants';
 export * from './localization';
 export * from './keyboards.constants';
 export * from './telegram.constants';
+export * from './chars.constants';

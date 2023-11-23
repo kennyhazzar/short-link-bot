@@ -1,3 +1,4 @@
+import { Link } from '@resource/links/entities/link.entity';
 import { texts } from '../constants';
 import { LanguageCode, Target } from '../types';
 
@@ -31,3 +32,25 @@ export const getLanguageByCode = (languageCode: LanguageCode) => {
 
   return texts[languageCode];
 };
+
+export const getLinkInformationText = (
+  languageCode: LanguageCode,
+  link: Link,
+  appUrl: string,
+) =>
+  getTextByLanguageCode(languageCode, 'link_info', {
+    title:
+      link.title ||
+      getTextByLanguageCode(languageCode, 'property_value_not_found'),
+    description:
+      link.description ||
+      getTextByLanguageCode(languageCode, 'property_value_not_found'),
+    createdAt: link.createdAt.toISOString(),
+    originalLink: link.url,
+    shortLink: `${appUrl}/${link.alias}`,
+    redirectCount: String(link.redirectsCount),
+    isSubscribe: getTextByLanguageCode(
+      languageCode,
+      link.isSubscribe ? 'yes_particle' : 'no_particle',
+    ),
+  });

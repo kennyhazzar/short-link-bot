@@ -1,5 +1,6 @@
 export enum ACTIONS {
   setLanguage = 'language_',
+  setSubscribe = 'subscribe_',
   showMedia = 'media_',
 }
 

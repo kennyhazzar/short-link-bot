@@ -23,8 +23,8 @@ export const texts: Localization[] = [
   },
   {
     target: 'link_info',
-    ru: 'Заголовок: `%title%`\nОписание: `%description%`\nДата создания: `%createdAt%`\nОригинальная ссылка: `%originalLink%`\nКороткая версия: `%shortLink%`\nКоличество переходов: %redirectCount%\nПодписка: %isSubscribe%',
-    en: 'Title: `%title%`\nDescription: `%description%`\nDate of creation: `%createdAt%`\nOriginal link: `%originalLink%`\nShort version: `%shortLink%`\nRedirect count on the link: %redirectCount%\nSubscribe: %isSubscribe%',
+    ru: 'Заголовок: `%title%`\nОписание: `%description%`\nДата создания: `%createdAt%`\nОригинальная ссылка: `%originalLink%`\nКороткая версия: `%shortLink%`\nКоличество переходов: %redirectCount%\nПодписка на редиректы: %isSubscribe%',
+    en: 'Title: `%title%`\nDescription: `%description%`\nDate of creation: `%createdAt%`\nOriginal link: `%originalLink%`\nShort version: `%shortLink%`\nRedirect count on the link: %redirectCount%\nSubscribe to handle redirects: %isSubscribe%',
   },
   {
     target: 'stats_error_link_does_not_found',
@@ -115,5 +115,20 @@ export const texts: Localization[] = [
     target: 'property_value_not_found',
     ru: '`Пусто`',
     en: '`Empty`',
+  },
+  {
+    target: 'subscribe_button_yes',
+    ru: 'Подписаться',
+    en: 'Subscribe',
+  },
+  {
+    target: 'subscribe_button_no',
+    ru: 'Отписаться',
+    en: 'Unsubscribe',
+  },
+  {
+    target: 'subscribe_internal_error',
+    ru: 'Что-то пошло не так при подписке. Обратитесь к разработчику, или воспользуйтесь командой /sub',
+    en: 'Something went wrong while subscribing up. Contact the developer or use /sub command',
   },
 ];

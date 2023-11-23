@@ -11,12 +11,13 @@ import {
   MainUpdateContext,
   Target,
   languageMenu,
-  showMediaGroupMenu,
+  showLinkInfoMenu,
   generateId,
   getLanguageByCode,
   getTextByLanguageCode,
   getValidUrlByMessageForSubscribeCommand,
   getValidUrlByTelegramUserMessage,
+  getLinkInformationText,
 } from '@core/index';
 import { LinksService } from '@resource/links/links.service';
 
@@ -75,30 +76,13 @@ export class TextUpdate {
             );
 
             if (link) {
-              const caption = getTextByLanguageCode(languageCode, 'link_info', {
-                title:
-                  link.title ||
-                  getTextByLanguageCode(
-                    languageCode,
-                    'property_value_not_found',
-                  ),
-                description:
-                  link.description ||
-                  getTextByLanguageCode(
-                    languageCode,
-                    'property_value_not_found',
-                  ),
-                createdAt: link.createdAt.toISOString(),
-                originalLink: link.url,
-                shortLink: `${appUrl}/${link.alias}`,
-                redirectCount: String(link.redirectsCount),
-                isSubscribe: getTextByLanguageCode(
-                  languageCode,
-                  link.isSubscribe ? 'yes_particle' : 'no_particle',
-                ),
-              });
+              const caption = getLinkInformationText(
+                languageCode,
+                link,
+                appUrl,
+              );
 
-              ctx.reply(caption, showMediaGroupMenu(languageCode, link.alias));
+              ctx.reply(caption, showLinkInfoMenu(languageCode, link));
 
               return;
             } else {

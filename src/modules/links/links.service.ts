@@ -119,18 +119,20 @@ export class LinksService {
   async updateLinkByAlias(
     alias: string,
     payload: UpdateLinkDto,
-  ): Promise<void> {
+  ): Promise<Link> {
     const cacheKey = `link_${alias}`;
 
-    const link = await this.linkRepository.findOne({
+    let link = await this.linkRepository.findOne({
       where: { alias },
       relations: ['creator'],
     });
 
     if (link) {
-      await this.linkRepository.save({ ...link, ...payload });
+      link = await this.linkRepository.save({ ...link, ...payload });
       await this.cacheManager.set(cacheKey, { ...link, ...payload });
     }
+
+    return link;
   }
 
   async deleteLinkByAlias(alias: string): Promise<void> {
