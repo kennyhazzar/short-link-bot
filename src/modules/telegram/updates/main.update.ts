@@ -1,12 +1,15 @@
 import { Update, Use } from 'nestjs-telegraf';
-import { UsersService } from '../../users/users.service';
-import { getTextByLanguageCode } from '../../../common/utils';
+import { UsersService } from '@resource/users/users.service';
 import {
   Message,
   Update as TelegrafUpdate,
 } from 'telegraf/typings/core/types/typegram';
 import { ConfigService } from '@nestjs/config';
-import { CommonConfigs, MainUpdateContext } from '../../../common';
+import {
+  CommonConfigs,
+  MainUpdateContext,
+  getTextByLanguageCode,
+} from '@common/index';
 
 @Update()
 export class MainUpdate {

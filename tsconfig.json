@@ -17,6 +17,12 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "paths": {
+      "@common/*": ["src/common/*"],
+      "@resource/links/*": ["src/modules/links/*"],
+      "@resource/users/*": ["src/modules/users/*"],
+      "@auth/*": ["src/modules/auth/*"]
+    }
   }
 }

@@ -11,7 +11,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from '../users/users.module';
 import { RedisClientOptions } from 'redis';
 import { CacheModule } from '@nestjs/cache-manager';
-import { CacheConfig } from '../../common';
+import { CacheConfig } from '@common/index';
 import { PreviewConsumer } from './preview.processor';
 
 @Module({

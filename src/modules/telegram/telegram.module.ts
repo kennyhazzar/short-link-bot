@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ActionsUpdate, MainUpdate, TextUpdate } from './updates';
-import { UsersModule } from '../users/users.module';
-import { LinksModule } from '../links/links.module';
+import { UsersModule } from '@resource/users/users.module';
+import { LinksModule } from '@resource/links/links.module';
 import { ConfigModule } from '@nestjs/config';
 import { BullModule } from '@nestjs/bull';
 

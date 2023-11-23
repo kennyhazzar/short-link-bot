@@ -6,10 +6,10 @@ import {
   OneToMany,
   OneToOne,
 } from 'typeorm';
-import { BaseEntity } from '../../../common';
+import { BaseEntity } from '@common/index';
 import { ApiProperty } from '@nestjs/swagger';
-import { Link } from '../../links/entities/link.entity';
-import { Auth } from '../../auth/entities';
+import { Link } from '@resource/links/entities/link.entity';
+import { Auth } from '@auth/entities';
 
 @Entity()
 export class User extends BaseEntity {

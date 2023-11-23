@@ -1,5 +1,5 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
-import { BaseEntity } from '../../../common';
+import { BaseEntity } from '@common/index';
 import { ApiProperty } from '@nestjs/swagger';
 import { Link } from './link.entity';
 import { Point } from 'geojson';

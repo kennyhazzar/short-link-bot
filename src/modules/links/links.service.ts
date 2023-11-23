@@ -17,9 +17,8 @@ import {
 } from './dto';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { CACHE_LINK_TTL, IMAGE_LINK_TTL } from '../../common';
+import { CACHE_LINK_TTL, IMAGE_LINK_TTL, generateId } from '@common/index';
 import { User } from '../users/entities/user.entity';
-import { generateId } from '../../common/utils';
 
 @Injectable()
 export class LinksService {

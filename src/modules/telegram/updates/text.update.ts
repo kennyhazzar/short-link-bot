@@ -1,13 +1,8 @@
 import { On, Update } from 'nestjs-telegraf';
-import {
-  generateId,
-  getLanguageByCode,
-  getTextByLanguageCode,
-  getValidUrlByMessageForSubscribeCommand,
-  getValidUrlByTelegramUserMessage,
-} from '../../../common/utils';
-import { LinksService } from '../../links/links.service';
 import { ConfigService } from '@nestjs/config';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
+import { Message } from 'telegraf/typings/core/types/typegram';
 import {
   COMMANDS,
   CommonConfigs,
@@ -17,17 +12,18 @@ import {
   Target,
   languageMenu,
   showMediaGroupMenu,
-} from '../../../common';
-import { InjectQueue } from '@nestjs/bull';
-import { Queue } from 'bull';
-import { Message } from 'telegraf/typings/core/types/typegram';
-import { UsersService } from '../../users/users.service';
+  generateId,
+  getLanguageByCode,
+  getTextByLanguageCode,
+  getValidUrlByMessageForSubscribeCommand,
+  getValidUrlByTelegramUserMessage,
+} from '@common/index';
+import { LinksService } from '@resource/links/links.service';
 
 @Update()
 export class TextUpdate {
   constructor(
     private readonly linksService: LinksService,
-    private readonly usersService: UsersService,
     private configService: ConfigService,
     @InjectQueue('link_queue') private linkQueue: Queue<JobSendAliasLink>,
     @InjectQueue('preview_queue')

@@ -5,8 +5,8 @@ import { Repository } from 'typeorm';
 import { InsertUserDto, UpdateUserDto } from './dto/user.dto';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
-import { CACHE_USER_TTL } from '../../common';
-import { Link } from '../links/entities/link.entity';
+import { CACHE_USER_TTL } from '@common/index';
+import { Link } from '@resource/links/entities/link.entity';
 
 @Injectable()
 export class UsersService {

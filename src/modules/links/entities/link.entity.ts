@@ -1,12 +1,12 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { BaseEntity } from '../../../common';
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../../../modules/users/entities/user.entity';
 import {
   LINK_DICTIONARY,
   MAXIMUM_LINK_LENGTH,
   MINIMUM_LINK_LENGTH,
-} from '../../../common/constants';
+  BaseEntity,
+} from '@common/index';
 import { History } from './history.entity';
 
 @Entity()

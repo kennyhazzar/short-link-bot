@@ -2,15 +2,15 @@ import { Action, Update } from 'nestjs-telegraf';
 import { MediaGroup } from 'telegraf/typings/telegram-types';
 import { Update as TelegrafUpdate } from 'telegraf/typings/core/types/typegram';
 import { ConfigService } from '@nestjs/config';
-import { LinksService } from '../../../links/links.service';
-import { UsersService } from '../../../users/users.service';
+import { LinksService } from '@resource/links/links.service';
+import { UsersService } from '@resource/users/users.service';
 import {
   MainUpdateContext,
   CommonConfigs,
   languageInlineKeyboard,
   getTextByLanguageCode,
   getLanguageByCode,
-} from '../../../../common';
+} from '@common/index';
 
 @Update()
 export class ActionsUpdate {
@@ -71,6 +71,9 @@ export class ActionsUpdate {
           getTextByLanguageCode(languageCode, 'show_link_media_error', {
             link: `${appUrl}/links/images?id=${imageLink}`,
           }),
+          {
+            disable_web_page_preview: true,
+          },
         );
       }
 

@@ -3,7 +3,7 @@ import {
   LINK_DICTIONARY,
   MAXIMUM_LINK_LENGTH,
   MINIMUM_LINK_LENGTH,
-} from '../../../common/constants';
+} from '@common/index';
 import { Point } from 'geojson';
 
 export class InsertLinkDto {

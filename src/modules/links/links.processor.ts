@@ -12,12 +12,10 @@ import {
   IpwhoisResponse,
   JobHistory,
   JobSendAliasLink,
-} from '../../common';
-import {
   detector,
   generateQR,
   getTextByLanguageCode,
-} from '../../common/utils';
+} from '@common/index';
 import { InjectBot } from 'nestjs-telegraf';
 import { Context, Telegraf } from 'telegraf';
 import isbot from 'isbot';
