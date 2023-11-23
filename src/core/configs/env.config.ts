@@ -34,6 +34,11 @@ const throttler = registerAs('throttler', () => ({
   limit: +process.env.THROTTLE_LIMIT,
 }));
 
+const http = registerAs('http', () => ({
+  timeout: +process.env.HTTP_TIMEOUT,
+  maxRedirects: +process.env.HTTP_MAX_REDIRECTS,
+}));
+
 export const EnvConfig: ConfigModuleOptions = {
   envFilePath: '.env',
   isGlobal: true,
@@ -51,6 +56,8 @@ export const EnvConfig: ConfigModuleOptions = {
     APP_URL: Joi.string().required(),
     THROTTLE_TTL: Joi.number().required(),
     THROTTLE_LIMIT: Joi.number().required(),
+    HTTP_TIMEOUT: Joi.number().required(),
+    HTTP_MAX_REDIRECTS: Joi.number().required(),
   }),
-  load: [common, database, redis, ipwhois, telegram, throttler],
+  load: [common, database, redis, ipwhois, telegram, throttler, http],
 };

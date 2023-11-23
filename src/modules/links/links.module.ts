@@ -11,8 +11,9 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from '../users/users.module';
 import { RedisClientOptions } from 'redis';
 import { CacheModule } from '@nestjs/cache-manager';
-import { CacheConfig } from '@core/index';
+import { CacheConfig, HttpConfig } from '@core/index';
 import { PreviewConsumer } from './preview.processor';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { PreviewConsumer } from './preview.processor';
     BullModule.registerQueueAsync({ name: 'link_queue' }),
     BullModule.registerQueueAsync({ name: 'preview_queue' }),
     CacheModule.registerAsync<RedisClientOptions>(CacheConfig),
+    HttpModule.registerAsync(HttpConfig),
     ConfigModule,
     UsersModule,
   ],

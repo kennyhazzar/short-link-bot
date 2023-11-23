@@ -4,7 +4,6 @@ import { Job } from 'bull';
 import { UpdateHistoryDto } from './dto';
 import { LinksService } from './links.service';
 import { ConfigService } from '@nestjs/config';
-import axios from 'axios';
 import {
   CommonConfigs,
   DetectorResult,
@@ -19,13 +18,16 @@ import {
 import { InjectBot } from 'nestjs-telegraf';
 import { Context, Telegraf } from 'telegraf';
 import isbot from 'isbot';
+import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
 
 @Processor('link_queue')
 export class LinkConsumer {
   constructor(
     @InjectBot() private readonly bot: Telegraf<Context>,
     private readonly linkService: LinksService,
-    private configService: ConfigService,
+    private readonly configService: ConfigService,
+    private readonly httpService: HttpService,
   ) {}
   private readonly logger = new Logger(LinkConsumer.name);
 
@@ -63,7 +65,9 @@ export class LinkConsumer {
 
     if (!isBot) {
       try {
-        const { data } = await axios.get<IpwhoisResponse>(`${url}/${ip}`);
+        const { data } = await firstValueFrom(
+          this.httpService.get<IpwhoisResponse>(`${url}/${ip}`),
+        );
 
         if (data.success) {
           const { city, type, country, longitude, latitude } = data;
@@ -97,7 +101,7 @@ export class LinkConsumer {
           }
         }
       } catch (error: any) {
-        console.log(error);
+        this.logger.error('ipwhois error');
       }
       await Promise.allSettled([
         this.linkService.updateHistoryByLinkId(link.id, payload),

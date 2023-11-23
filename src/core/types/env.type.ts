@@ -30,3 +30,8 @@ export class ThrottlerConfigs {
   ttl: number;
   limit: number;
 }
+
+export class HttpConfigs {
+  timeout: number;
+  maxRedirects: number;
+}
