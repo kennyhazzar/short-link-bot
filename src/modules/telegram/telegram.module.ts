@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { MainUpdate, TextUpdate } from './updates';
+import { ActionsUpdate, MainUpdate, TextUpdate } from './updates';
 import { UsersModule } from '../users/users.module';
 import { LinksModule } from '../links/links.module';
 import { ConfigModule } from '@nestjs/config';
@@ -13,6 +13,6 @@ import { BullModule } from '@nestjs/bull';
     BullModule.registerQueueAsync({ name: 'link_queue' }),
     BullModule.registerQueueAsync({ name: 'preview_queue' }),
   ],
-  providers: [MainUpdate, TextUpdate],
+  providers: [MainUpdate, TextUpdate, ActionsUpdate],
 })
 export class TelegramModule {}
