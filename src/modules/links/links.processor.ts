@@ -11,6 +11,7 @@ import {
   IpwhoisResponse,
   JobHistory,
   JobSendAliasLink,
+  TelegrafConfigs,
   detector,
   generateQR,
   getTextByLanguageCode,
@@ -33,11 +34,43 @@ export class LinkConsumer {
 
   @Process('history')
   async updateHistory(job: Job<JobHistory>) {
+    const { appUrl } = this.configService.get<CommonConfigs>('common');
+    const { url: ipwhoisUrl } =
+      this.configService.get<IpwhoisConfigs>('ipwhois');
+
+    if (job.data?.isAdmin) {
+      const {
+        data: { ip, userAgent },
+      } = job;
+      const { adminTelegramId } = this.configService.get<TelegrafConfigs>('tg');
+
+      try {
+        this.bot.telegram.sendMessage(
+          adminTelegramId,
+          `Новый переход по ${appUrl}!\nip: \`${ip}\`\nuserAgent: \`${userAgent}\``,
+          {
+            reply_markup: {
+              inline_keyboard: [
+                [
+                  {
+                    text: 'Посмотреть на ipwhois',
+                    url: `${ipwhoisUrl}/${ip}`,
+                  },
+                ],
+              ],
+            },
+            parse_mode: 'Markdown',
+          },
+        );
+      } catch (error) {
+        this.logger.error('ошибка отправки уведомления о глобальном переходе.');
+      }
+      return;
+    }
+
     const {
       data: { ip, link, userAgent },
     } = job;
-
-    const { url } = this.configService.get<IpwhoisConfigs>('ipwhois');
 
     const {
       result: {
@@ -66,7 +99,7 @@ export class LinkConsumer {
     if (!isBot) {
       try {
         const { data } = await firstValueFrom(
-          this.httpService.get<IpwhoisResponse>(`${url}/${ip}`),
+          this.httpService.get<IpwhoisResponse>(`${ipwhoisUrl}/${ip}`),
         );
 
         if (data.success) {
@@ -80,8 +113,6 @@ export class LinkConsumer {
           };
 
           if (link.isSubscribe) {
-            const { appUrl } = this.configService.get<CommonConfigs>('common');
-
             const text = getTextByLanguageCode(
               job.data.link.creator.languageCode,
               'new_redirect',

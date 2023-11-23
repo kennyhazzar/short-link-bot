@@ -3,7 +3,8 @@ import { Link } from '../../modules/links/entities/link.entity';
 export class JobHistory {
   userAgent: string;
   ip: string;
-  link: Link;
+  link?: Link;
+  isAdmin?: boolean;
 }
 
 export class JobSendAliasLink {

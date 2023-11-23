@@ -8,12 +8,17 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { JobHistory, TelegrafConfigs } from '@core/index';
+import {
+  JobHistory,
+  TelegrafConfigs,
+  getNetworkTrackerInfo,
+} from '@core/index';
 import { ApiExcludeController, ApiExcludeEndpoint } from '@nestjs/swagger';
 import { ThrottlerBehindProxyGuard } from './auth/guard';
 import { LinksService } from './links/links.service';
 import { Queue } from 'bull';
 import { InjectQueue } from '@nestjs/bull';
+import { Request } from 'express';
 
 @ApiExcludeController()
 @Controller()
@@ -27,7 +32,15 @@ export class AppController {
   ) {}
   @Get()
   @Redirect()
-  async redirectToMain() {
+  async redirectToMain(@Req() request: Request) {
+    const { userAgent, ip } = getNetworkTrackerInfo(request);
+
+    this.linkQueue.add('history', {
+      ip,
+      userAgent,
+      isAdmin: true,
+    });
+
     const { url } = this.configService.get<TelegrafConfigs>('tg');
 
     return { url };
@@ -39,11 +52,7 @@ export class AppController {
   @UseGuards(ThrottlerBehindProxyGuard)
   async redirect(@Param('alias') alias: string, @Req() request: Request) {
     const link = await this.linksService.getById(alias);
-    const userAgent = request.headers['user-agent'];
-    const ip =
-      (request.headers['x-real-ip'] as string) ||
-      (request.headers['x-forwarded-for'] as string) ||
-      '';
+    const { userAgent, ip } = getNetworkTrackerInfo(request);
 
     if (!link) {
       const { url } = this.configService.get<TelegrafConfigs>('tg');
