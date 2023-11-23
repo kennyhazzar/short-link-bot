@@ -49,25 +49,36 @@ export const showLinkInfoMenu = (
   parse_mode: 'Markdown',
 });
 
+export const linkInfoShowMediaButton = (
+  languageCode: LanguageCode,
+  alias: string,
+): InlineKeyboardButton[] => [
+  {
+    text: getTextByLanguageCode(languageCode, 'show_link_media'),
+    callback_data: `${ACTIONS.showMedia}${alias}`,
+  },
+];
+
+export const linkInfoSubscribeButton = (
+  languageCode: LanguageCode,
+  alias: string,
+  isSubscribe: boolean,
+): InlineKeyboardButton[] => [
+  {
+    text: getTextByLanguageCode(
+      languageCode,
+      isSubscribe ? 'subscribe_button_no' : 'subscribe_button_yes',
+    ),
+    callback_data: `${ACTIONS.setSubscribe}${alias}_${isSubscribe}`,
+  },
+];
+
 export const showLinkInfoInlineKeyboard = (
   languageCode: LanguageCode,
   { alias, isSubscribe }: Link,
 ): InlineKeyboardButton[][] => [
-  [
-    {
-      text: getTextByLanguageCode(languageCode, 'show_link_media'),
-      callback_data: `${ACTIONS.showMedia}${alias}`,
-    },
-  ],
-  [
-    {
-      text: getTextByLanguageCode(
-        languageCode,
-        isSubscribe ? 'subscribe_button_no' : 'subscribe_button_yes',
-      ),
-      callback_data: `${ACTIONS.setSubscribe}${alias}_${isSubscribe}`,
-    },
-  ],
+  linkInfoShowMediaButton(languageCode, alias),
+  linkInfoSubscribeButton(languageCode, alias, isSubscribe),
 ];
 
 const getLanguageButtonText = (

@@ -12,6 +12,8 @@ import {
   getLanguageByCode,
   getLinkInformationText,
   showLinkInfoInlineKeyboard,
+  linkInfoSubscribeButton,
+  linkInfoShowMediaButton,
 } from '@core/index';
 import { Logger } from '@nestjs/common';
 
@@ -56,6 +58,9 @@ export class ActionsUpdate {
             parse_mode: 'Markdown',
           });
         } catch (error) {
+          await ctx.editMessageReplyMarkup({
+            inline_keyboard: [linkInfoShowMediaButton(languageCode, alias)],
+          });
           ctx.answerCbQuery(
             getTextByLanguageCode(
               languageCode,
@@ -80,7 +85,9 @@ export class ActionsUpdate {
       }
     } catch (error) {
       this.logger.error(error);
-      await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
+      await ctx.editMessageReplyMarkup({
+        inline_keyboard: [linkInfoShowMediaButton(languageCode, alias)],
+      });
       await ctx.answerCbQuery(
         getTextByLanguageCode(languageCode, 'subscribe_internal_error'),
         {
@@ -125,13 +132,21 @@ export class ActionsUpdate {
 
       try {
         await ctx.replyWithMediaGroup(media);
-        await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
+        await ctx.editMessageReplyMarkup({
+          inline_keyboard: [
+            linkInfoSubscribeButton(languageCode, alias, link.isSubscribe),
+          ],
+        });
         ctx.answerCbQuery(
           getTextByLanguageCode(languageCode, 'show_link_media_success'),
         );
       } catch (error) {
         console.log(error);
-        await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
+        await ctx.editMessageReplyMarkup({
+          inline_keyboard: [
+            linkInfoSubscribeButton(languageCode, alias, link.isSubscribe),
+          ],
+        });
         const imageLink = await this.linksService.createImageLink(
           ctx.state.user.telegramId,
           alias,
@@ -149,7 +164,11 @@ export class ActionsUpdate {
 
       return;
     } else {
-      await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
+      await ctx.editMessageReplyMarkup({
+        inline_keyboard: [
+          linkInfoSubscribeButton(languageCode, alias, link.isSubscribe),
+        ],
+      });
       ctx.answerCbQuery(
         getTextByLanguageCode(languageCode, 'show_link_media_not_found'),
         {
