@@ -24,7 +24,8 @@ export type Target =
   | 'property_value_not_found'
   | 'subscribe_button_yes'
   | 'subscribe_button_no'
-  | 'subscribe_internal_error';
+  | 'subscribe_internal_error'
+  | 'subscribe_already_action_error';
 
 export type LanguageCode = 'ru' | 'en' | string;
 

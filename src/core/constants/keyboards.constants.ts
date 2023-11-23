@@ -65,7 +65,7 @@ export const showLinkInfoInlineKeyboard = (
         languageCode,
         isSubscribe ? 'subscribe_button_no' : 'subscribe_button_yes',
       ),
-      callback_data: `${ACTIONS.setSubscribe}${alias}`,
+      callback_data: `${ACTIONS.setSubscribe}${alias}_${isSubscribe}`,
     },
   ],
 ];

@@ -131,4 +131,9 @@ export const texts: Localization[] = [
     ru: 'Что-то пошло не так при подписке. Обратитесь к разработчику, или воспользуйтесь командой /sub',
     en: 'Something went wrong while subscribing up. Contact the developer or use /sub command',
   },
+  {
+    target: 'subscribe_already_action_error',
+    ru: 'Вы уже использовали это событие. Обновите контекст, или попробуйте нажать на кнопку еще раз',
+    en: 'You have already used this event. Refresh the context, or try clicking the button again',
+  },
 ];

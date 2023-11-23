@@ -39,21 +39,33 @@ export class ActionsUpdate {
       );
 
       if (link) {
+        const { appUrl } = this.configService.get<CommonConfigs>('common');
+
         link = await this.linksService.updateLinkByAlias(alias, {
           isSubscribe: !link.isSubscribe,
         });
 
-        const { appUrl } = this.configService.get<CommonConfigs>('common');
-
         const caption = getLinkInformationText(languageCode, link, appUrl);
 
-        ctx.editMessageText(caption, {
-          reply_markup: {
-            inline_keyboard: showLinkInfoInlineKeyboard(languageCode, link),
-          },
-          disable_web_page_preview: true,
-          parse_mode: 'Markdown',
-        });
+        try {
+          await ctx.editMessageText(caption, {
+            reply_markup: {
+              inline_keyboard: showLinkInfoInlineKeyboard(languageCode, link),
+            },
+            disable_web_page_preview: true,
+            parse_mode: 'Markdown',
+          });
+        } catch (error) {
+          ctx.answerCbQuery(
+            getTextByLanguageCode(
+              languageCode,
+              'subscribe_already_action_error',
+            ),
+            {
+              show_alert: true,
+            },
+          );
+        }
       } else {
         await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
         await ctx.answerCbQuery(
