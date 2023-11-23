@@ -76,8 +76,18 @@ export class TextUpdate {
 
             if (link) {
               const caption = getTextByLanguageCode(languageCode, 'link_info', {
-                title: link.title || '`Отсутствует`',
-                description: link.description || '`Отсутствует`',
+                title:
+                  link.title ||
+                  getTextByLanguageCode(
+                    languageCode,
+                    'property_value_not_found',
+                  ),
+                description:
+                  link.description ||
+                  getTextByLanguageCode(
+                    languageCode,
+                    'property_value_not_found',
+                  ),
                 createdAt: link.createdAt.toISOString(),
                 originalLink: link.url,
                 shortLink: `${appUrl}/${link.alias}`,

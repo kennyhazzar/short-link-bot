@@ -111,4 +111,9 @@ export const texts: Localization[] = [
     ru: 'Нет',
     en: 'No',
   },
+  {
+    target: 'property_value_not_found',
+    ru: '`Пусто`',
+    en: '`Empty`',
+  },
 ];

@@ -20,7 +20,8 @@ export type Target =
   | 'show_link_media_success'
   | 'yes_particle'
   | 'no_particle'
-  | 'show_link_media_not_found';
+  | 'show_link_media_not_found'
+  | 'property_value_not_found';
 
 export type LanguageCode = 'ru' | 'en' | string;
 
