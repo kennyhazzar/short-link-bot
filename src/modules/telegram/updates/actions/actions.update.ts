@@ -10,7 +10,7 @@ import {
   languageInlineKeyboard,
   getTextByLanguageCode,
   getLanguageByCode,
-} from '@common/index';
+} from '@core/index';
 
 @Update()
 export class ActionsUpdate {

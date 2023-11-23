@@ -1,6 +1,6 @@
 import { Job } from 'bull';
 import { getLinkPreview } from 'link-preview-js';
-import { JobGetLinkPreview } from '@common/index';
+import { JobGetLinkPreview } from '@core/index';
 import { UpdateLinkDto } from './dto';
 import { Logger } from '@nestjs/common';
 import { LinksService } from './links.service';

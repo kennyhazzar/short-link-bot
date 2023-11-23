@@ -9,7 +9,7 @@ import {
   CommonConfigs,
   MainUpdateContext,
   getTextByLanguageCode,
-} from '@common/index';
+} from '@core/index';
 
 @Update()
 export class MainUpdate {

@@ -6,7 +6,7 @@ import {
   TelegrafConfig,
   ThrottlerConfig,
   TypeormConfig,
-} from '../common';
+} from '@core/configs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { LinksModule } from './links/links.module';

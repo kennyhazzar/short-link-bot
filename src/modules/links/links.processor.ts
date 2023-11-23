@@ -15,7 +15,7 @@ import {
   detector,
   generateQR,
   getTextByLanguageCode,
-} from '@common/index';
+} from '@core/index';
 import { InjectBot } from 'nestjs-telegraf';
 import { Context, Telegraf } from 'telegraf';
 import isbot from 'isbot';

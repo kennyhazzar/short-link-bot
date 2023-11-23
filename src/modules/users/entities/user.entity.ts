@@ -6,7 +6,7 @@ import {
   OneToMany,
   OneToOne,
 } from 'typeorm';
-import { BaseEntity } from '@common/index';
+import { BaseEntity } from '@core/index';
 import { ApiProperty } from '@nestjs/swagger';
 import { Link } from '@resource/links/entities/link.entity';
 import { Auth } from '@auth/entities';

@@ -17,7 +17,7 @@ import {
   getTextByLanguageCode,
   getValidUrlByMessageForSubscribeCommand,
   getValidUrlByTelegramUserMessage,
-} from '@common/index';
+} from '@core/index';
 import { LinksService } from '@resource/links/links.service';
 
 @Update()

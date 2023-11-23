@@ -6,7 +6,7 @@ import {
   MAXIMUM_LINK_LENGTH,
   MINIMUM_LINK_LENGTH,
   BaseEntity,
-} from '@common/index';
+} from '@core/index';
 import { History } from './history.entity';
 
 @Entity()

@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Auth } from './entities/auth.entity';
 import { RedisClientOptions } from 'redis';
-import { CacheConfig } from '@common/index';
+import { CacheConfig } from '@core/index';
 import { CacheModule } from '@nestjs/cache-manager';
 import { PassportModule } from '@nestjs/passport';
 import { ApiKeyStrategy } from './strategy';

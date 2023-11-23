@@ -19,7 +19,7 @@
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true,
     "paths": {
-      "@common/*": ["src/common/*"],
+      "@core/*": ["src/core/*"],
       "@resource/links/*": ["src/modules/links/*"],
       "@resource/users/*": ["src/modules/users/*"],
       "@auth/*": ["src/modules/auth/*"]

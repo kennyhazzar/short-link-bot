@@ -8,7 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { JobHistory, TelegrafConfigs } from '../common';
+import { JobHistory, TelegrafConfigs } from '@core/index';
 import { ApiExcludeController, ApiExcludeEndpoint } from '@nestjs/swagger';
 import { ThrottlerBehindProxyGuard } from './auth/guard';
 import { LinksService } from './links/links.service';

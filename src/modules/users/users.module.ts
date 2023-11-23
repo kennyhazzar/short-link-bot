@@ -5,7 +5,7 @@ import { User } from './entities';
 import { Link } from '@resource/links/entities/link.entity';
 import { CacheModule } from '@nestjs/cache-manager';
 import { RedisClientOptions } from 'redis';
-import { CacheConfig } from '@common/index';
+import { CacheConfig } from '@core/index';
 
 @Module({
   imports: [
