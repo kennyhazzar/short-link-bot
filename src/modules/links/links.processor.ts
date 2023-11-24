@@ -38,7 +38,7 @@ export class LinkConsumer {
     const { url: ipwhoisUrl } =
       this.configService.get<IpwhoisConfigs>('ipwhois');
 
-    if (job.data?.isAdmin) {
+    if (job.data?.isAdmin && !isbot(job.data.userAgent)) {
       const {
         data: { ip, userAgent },
       } = job;
