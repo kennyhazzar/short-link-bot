@@ -13,7 +13,6 @@ import {
   getLinkInformationText,
   showLinkInfoInlineKeyboard,
   linkInfoSubscribeButton,
-  linkInfoShowMediaButton,
 } from '@core/index';
 import { Logger } from '@nestjs/common';
 
@@ -59,7 +58,8 @@ export class ActionsUpdate {
           });
         } catch (error) {
           await ctx.editMessageReplyMarkup({
-            inline_keyboard: [linkInfoShowMediaButton(languageCode, alias)],
+            // inline_keyboard: [linkInfoShowMediaButton(languageCode, alias)], // TODO: Разобраться че с этим делать))
+            inline_keyboard: [],
           });
           ctx.answerCbQuery(
             getTextByLanguageCode(
@@ -86,7 +86,8 @@ export class ActionsUpdate {
     } catch (error) {
       this.logger.error(error);
       await ctx.editMessageReplyMarkup({
-        inline_keyboard: [linkInfoShowMediaButton(languageCode, alias)],
+        // inline_keyboard: [linkInfoShowMediaButton(languageCode, alias)], // TODO: Разобраться че с этим делать))
+        inline_keyboard: [],
       });
       await ctx.answerCbQuery(
         getTextByLanguageCode(languageCode, 'subscribe_internal_error'),

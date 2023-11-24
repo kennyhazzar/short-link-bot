@@ -77,7 +77,7 @@ export const showLinkInfoInlineKeyboard = (
   languageCode: LanguageCode,
   { alias, isSubscribe }: Link,
 ): InlineKeyboardButton[][] => [
-  linkInfoShowMediaButton(languageCode, alias),
+  // linkInfoShowMediaButton(languageCode, alias), // TODO: Разобраться че с этим делать))
   linkInfoSubscribeButton(languageCode, alias, isSubscribe),
 ];
 
