@@ -1,6 +1,6 @@
 import { Job } from 'bull';
 import { getLinkPreview } from 'link-preview-js';
-import { JobGetLinkPreview } from '@core/index';
+import { JobGetLinkPreview, getRandomUserAgent } from '@core/index';
 import { UpdateLinkDto } from './dto';
 import { Logger } from '@nestjs/common';
 import { LinksService } from './links.service';
@@ -19,7 +19,9 @@ export class PreviewConsumer {
     const languageCode = job.data?.languageCode;
     try {
       const headers: Record<string, string> = {
-        'user-agent': 'googlebot',
+        'user-agent': getRandomUserAgent(),
+        accept:
+          'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
       };
 
       if (languageCode) {
