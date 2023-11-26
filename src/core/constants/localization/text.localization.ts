@@ -68,8 +68,8 @@ export const texts: Localization[] = [
   },
   {
     target: 'new_redirect',
-    ru: 'По вашей ссылке прошли!\n🗺️ Место: `%city%`, `%country%` (IP = `%ip%`)\n📱💻 Устройство: `%userAgent%`\n🔗 Ссылка: `%link%`',
-    en: 'New click!\n🗺️ Location: `%city%`, `%country%` (IP = `%ip%`)\n📱💻 Device: `%userAgent%`\n🔗 Link: `%link%`',
+    ru: 'По вашей ссылке прошли!\n\nМесто: `%city%`, `%country%` (IP = `%ip%`)\nУстройство: `%userAgent%`\nСсылка: `%link%`',
+    en: 'New click!\n\nLocation: `%city%`, `%country%` (IP = `%ip%`)\nDevice: `%userAgent%`\nLink: `%link%`',
   },
   {
     target: 'language',
