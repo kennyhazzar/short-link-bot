@@ -9,7 +9,7 @@ import {
 import { BaseEntity } from '@core/index';
 import { ApiProperty } from '@nestjs/swagger';
 import { Link } from '@resource/links/entities/link.entity';
-import { Auth } from '@auth/entities';
+import { Auth } from 'src/resources/auth/entities';
 
 @Entity()
 export class User extends BaseEntity {

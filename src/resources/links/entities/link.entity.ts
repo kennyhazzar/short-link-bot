@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '../../../modules/users/entities/user.entity';
+import { User } from '../../users/entities/user.entity';
 import {
   LINK_DICTIONARY,
   MAXIMUM_LINK_LENGTH,

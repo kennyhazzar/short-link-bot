@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { LinksService } from './links.service';
 import { LinksController } from './links.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../../modules/users/entities/user.entity';
+import { User } from '../users/entities/user.entity';
 import { History } from './entities/history.entity';
 import { Link } from './entities/link.entity';
 import { BullModule } from '@nestjs/bull';
