@@ -1,4 +1,4 @@
-import { Link } from '../../modules/links/entities/link.entity';
+import { Link } from '@resource/links/entities/link.entity';
 
 export class JobHistory {
   userAgent: string;

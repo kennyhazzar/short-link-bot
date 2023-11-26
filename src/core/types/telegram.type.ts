@@ -1,5 +1,5 @@
 import { Context } from 'telegraf';
-import { User } from '../../modules/users/entities';
+import { User } from '@resource/users/entities';
 
 type ContextState = Record<string | symbol, any>;
 

@@ -20,9 +20,9 @@
     "esModuleInterop": true,
     "paths": {
       "@core/*": ["src/core/*"],
-      "@resource/links/*": ["src/modules/links/*"],
-      "@resource/users/*": ["src/modules/users/*"],
-      "@auth/*": ["src/modules/auth/*"]
+      "@resource/links/*": ["src/resources/links/*"],
+      "@resource/users/*": ["src/resources/users/*"],
+      "@auth/*": ["src/resources/auth/*"]
     }
   }
 }
