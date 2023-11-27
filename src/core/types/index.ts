@@ -5,3 +5,4 @@ export * from './queue.type';
 export * from './localization.type';
 export * from './express.type';
 export * from './telegram.type';
+export * from './media.type';

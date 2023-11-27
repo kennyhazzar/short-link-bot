@@ -10,6 +10,7 @@ import { BaseEntity } from '@core/index';
 import { ApiProperty } from '@nestjs/swagger';
 import { Link } from '@resource/links/entities/link.entity';
 import { Auth } from 'src/resources/auth/entities';
+import { MediaCard } from '@resource/social/entities';
 
 @Entity()
 export class User extends BaseEntity {
@@ -88,9 +89,13 @@ export class User extends BaseEntity {
   })
   @JoinColumn()
   @OneToMany(() => Link, (link) => link.id)
-  link: Link;
+  links: Link[];
 
   @JoinColumn()
   @OneToOne(() => Auth, (auth) => auth.id)
   apiAuth: Auth;
+
+  @JoinColumn()
+  @OneToMany(() => MediaCard, (card) => card.id)
+  cards: MediaCard[];
 }

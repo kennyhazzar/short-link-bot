@@ -1,16 +1,16 @@
 import { Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { HistoryBaseEntity } from '@core/index';
+import { HistoryBaseEntity } from '@core/db';
+import { SocialLink } from './social-links.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { Link } from './link.entity';
 
 @Entity()
-export class History extends HistoryBaseEntity {
+export class SocialLinkHistory extends HistoryBaseEntity {
   @ApiProperty({
     name: 'link',
     description: 'Объект ссылки. Связь с таблицей Link как Многие-К-Одному',
-    type: Link,
+    type: SocialLink,
   })
   @JoinColumn()
-  @ManyToOne(() => Link, (link) => link.id)
-  link?: Link;
+  @ManyToOne(() => SocialLink, (link) => link.id)
+  link?: SocialLink;
 }

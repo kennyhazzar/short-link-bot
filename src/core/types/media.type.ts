@@ -17,5 +17,9 @@ export enum SocialType {
   PIKABU = 'pikabu', // Pikabu
   TON_PLACE = 'ton-place', // Ton Place
   LINKED_IN = 'linked-in', // LinkedIn
-  
+  OWN_WEBSITE = 'own', // Свой сайт
+  GITHUB = 'github', // Github
+  GITHUB_REPOSITORY = 'github-repository', // Github репозиторий
+  GITLAB = 'gitlab', // Gitlab
+  GITLAB_REPOSITORY = 'gitlab-repository', // Gitlab репозиторий
 }
