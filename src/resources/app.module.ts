@@ -16,6 +16,7 @@ import { TelegrafModule } from 'nestjs-telegraf';
 import { TelegramModule } from './telegram/telegram.module';
 import { AuthModule } from './auth/auth.module';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { SocialMediaCardsModule } from './social-media-cards/social-media-cards.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
     LinksModule,
     TelegramModule,
     AuthModule,
+    SocialMediaCardsModule,
   ],
   controllers: [AppController],
 })
