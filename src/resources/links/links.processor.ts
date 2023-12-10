@@ -52,7 +52,7 @@ export class LinkConsumer {
       try {
         this.bot.telegram.sendMessage(
           adminTelegramId,
-          `Новый переход по ${appUrl}!\nip: \`${ip}\`\nuserAgent: \`${userAgent}\``,
+          `Новый переход по \`${appUrl}\`!\nip: \`${ip}\`\nuserAgent: \`${userAgent}\``,
           {
             reply_markup: {
               inline_keyboard: [
