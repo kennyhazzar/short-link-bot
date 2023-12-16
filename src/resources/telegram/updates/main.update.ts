@@ -20,48 +20,52 @@ export class MainUpdate {
 
   @Use()
   async checkUser(ctx: MainUpdateContext, next: () => Promise<void>) {
-    const message = ctx.message as Message.TextMessage;
-    const notFoundCommand = '/start not_found_';
+    try {
+      const message = ctx.message as Message.TextMessage;
+      const notFoundCommand = '/start not_found_';
 
-    if (
-      (ctx.update as TelegrafUpdate.MessageUpdate)?.message &&
-      message.text.includes(notFoundCommand)
-    ) {
-      const { appUrl } = this.configService.get<CommonConfigs>('common');
+      if (
+        (ctx.update as TelegrafUpdate.MessageUpdate)?.message &&
+        message.text.includes(notFoundCommand)
+      ) {
+        const { appUrl } = this.configService.get<CommonConfigs>('common');
 
-      ctx.reply(
-        getTextByLanguageCode(ctx.from.language_code, 'link_not_found', {
-          link: `${appUrl}/${message.text.split(notFoundCommand)[1]}`,
-        }),
-        {
-          parse_mode: 'Markdown',
-        },
-      );
+        ctx.reply(
+          getTextByLanguageCode(ctx.from.language_code, 'link_not_found', {
+            link: `${appUrl}/${message.text.split(notFoundCommand)[1]}`,
+          }),
+          {
+            parse_mode: 'Markdown',
+          },
+        );
 
-      return;
+        return;
+      }
+
+      const user = await this.usersService.getByTelegramId(ctx.chat.id);
+
+      ctx.state.user = user;
+      const languageCode = ctx.from.language_code === 'en' ? 'en' : 'ru';
+
+      if (!user) {
+        await this.usersService.insert({
+          telegramId: ctx.chat.id,
+          username: ctx.from.username,
+          languageCode,
+        });
+
+        ctx.reply(getTextByLanguageCode(languageCode, 'start'));
+
+        return;
+      }
+
+      if (user.isBlocked) {
+        return;
+      }
+
+      next();
+    } catch (error) {
+      console.log(error);
     }
-
-    const user = await this.usersService.getByTelegramId(ctx.chat.id);
-
-    ctx.state.user = user;
-    const languageCode = ctx.from.language_code === 'en' ? 'en' : 'ru';
-
-    if (!user) {
-      await this.usersService.insert({
-        telegramId: ctx.chat.id,
-        username: ctx.from.username,
-        languageCode,
-      });
-
-      ctx.reply(getTextByLanguageCode(languageCode, 'start'));
-
-      return;
-    }
-
-    if (user.isBlocked) {
-      return;
-    }
-
-    next();
   }
 }
