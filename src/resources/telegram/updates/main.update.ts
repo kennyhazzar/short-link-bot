@@ -24,6 +24,10 @@ export class MainUpdate {
       const message = ctx.message as Message.TextMessage;
       const notFoundCommand = '/start not_found_';
 
+      if (ctx.chat.type !== 'private') {
+        return;
+      }
+
       if (
         (ctx.update as TelegrafUpdate.MessageUpdate)?.message &&
         message.text.includes(notFoundCommand)
