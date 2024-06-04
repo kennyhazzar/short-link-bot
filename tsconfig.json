@@ -18,5 +18,11 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true,
+    "paths": {
+      "@core/*": ["src/core/*"],
+      "@resource/links/*": ["src/resources/links/*"],
+      "@resource/users/*": ["src/resources/users/*"],
+      "@auth/*": ["src/resources/auth/*"]
+    }
   }
 }
